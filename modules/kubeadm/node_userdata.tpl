@@ -41,4 +41,4 @@ apt-get install -y kubelet=${kubernetes_version_full} kubeadm=${kubernetes_versi
 apt-mark hold kubelet kubeadm kubectl
 
 sleep 120 # Give kubeadm time to setup the cluster
-eval $(aws ssm get-parameter --region ${region} --name /kube-lab/kubeadm/join-string --with-decryption | jq -r .Parameter.Value)
+eval $(aws ssm get-parameter --region ${region} --name /k8s-lab/kubeadm/join-string --with-decryption | jq -r .Parameter.Value)

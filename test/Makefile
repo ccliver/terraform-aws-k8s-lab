@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 init: ## Initialize the module
-	go mod init github.com/ccliver/teraform-aws-kub-lab
+	go mod init github.com/ccliver/teraform-aws-k8s-lab
 	go mod tidy
 
 test: ## Run the tests

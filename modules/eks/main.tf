@@ -57,7 +57,7 @@ module "eks" {
   }
 
   tags = {
-    Environment = "terraform-aws-kube-lab"
+    Environment = "terraform-aws-k8s-lab"
     Terraform   = "true"
   }
 }

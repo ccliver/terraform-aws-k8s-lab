@@ -381,7 +381,7 @@ resource "aws_instance" "control_plane" {
 
   tags = {
     Name        = "${var.app_name}-control-plane"
-    Environment = "terraform-aws-kube-lab"
+    Environment = "terraform-aws-k8s-lab"
   }
 }
 
@@ -463,7 +463,7 @@ resource "aws_autoscaling_group" "bar" {
 
   tag {
     key                 = "Environment"
-    value               = "terraform-aws-kube-lab"
+    value               = "terraform-aws-k8s-lab"
     propagate_at_launch = true
   }
 }
