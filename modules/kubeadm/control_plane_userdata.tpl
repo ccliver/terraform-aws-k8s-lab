@@ -63,7 +63,7 @@ echo "export ETCDCTL_CACERT=/home/ssm-user/pki/ca.crt" >> /home/ssm-user/.bashrc
 echo "export ETCDCTL_CERT=/home/ssm-user/pki/apiserver-etcd-client.crt" >> /home/ssm-user/.bashrc
 echo "export ETCDCTL_KEY=/home/ssm-user/pki/apiserver-etcd-client.key" >> /home/ssm-user/.bashrc
 
-aws ssm put-parameter --region ${region} --name /kube-lab/kubeadm/join-string --value "$(kubeadm token create --print-join-command)" --overwrite
+aws ssm put-parameter --region ${region} --name /k8s-lab/kubeadm/join-string --value "$(kubeadm token create --print-join-command)" --overwrite
 
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
 CLI_ARCH=amd64
@@ -82,11 +82,11 @@ helm repo update
 helm install ingress-nginx ingress-nginx/ingress-nginx
 
 aws ssm put-parameter --region ${region} \
-    --name /kube-lab/kubectl/certificate-authority-data \
+    --name /k8s-lab/kubectl/certificate-authority-data \
     --value "$(grep certificate-authority-data /etc/kubernetes/admin.conf  | awk -F': ' '{print $2}')" --overwrite
 aws ssm put-parameter --region ${region} \
-    --name /kube-lab/kubectl/client-certificate-data \
+    --name /k8s-lab/kubectl/client-certificate-data \
     --value "$(grep client-certificate-data /etc/kubernetes/admin.conf  | awk -F': ' '{print $2}')" --overwrite
 aws ssm put-parameter --region ${region} \
-    --name /kube-lab/kubectl/client-key-data \
+    --name /k8s-lab/kubectl/client-key-data \
     --value "$(grep client-key-data /etc/kubernetes/admin.conf  | awk -F': ' '{print $2}')" --overwrite

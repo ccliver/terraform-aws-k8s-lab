@@ -1,7 +1,7 @@
 variable "app_name" {
   type        = string
   description = "A name for various resources"
-  default     = "kube-lab"
+  default     = "k8s-lab"
 }
 
 variable "control_plane_instance_type" {

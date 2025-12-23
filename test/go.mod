@@ -1,4 +1,4 @@
-module terraform-aws-kube-lab
+module terraform-aws-k8s-lab
 
 go 1.24.4
 

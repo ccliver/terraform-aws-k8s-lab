@@ -1,6 +1,6 @@
 # Module to setup a Kubernetes lab on AWS
 
-[![pre-commit-terraform](https://github.com/ccliver/terraform-aws-kube-lab/actions/workflows/pr-check.yml/badge.svg)](https://github.com/ccliver/terraform-aws-kube-lab/actions/workflows/pr-check.yml)
+[![pre-commit-terraform](https://github.com/ccliver/terraform-aws-k8s-lab/actions/workflows/pr-check.yml/badge.svg)](https://github.com/ccliver/terraform-aws-k8s-lab/actions/workflows/pr-check.yml)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -29,7 +29,7 @@ No resources.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_api_allowed_cidrs"></a> [api\_allowed\_cidrs](#input\_api\_allowed\_cidrs) | A list of CIDRs granted access to the control plane API | `list(any)` | `[]` | no |
-| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | A name for various resources | `string` | `"kube-lab"` | no |
+| <a name="input_app_name"></a> [app\_name](#input\_app\_name) | A name for various resources | `string` | `"k8s-lab"` | no |
 | <a name="input_create_etcd_backups_bucket"></a> [create\_etcd\_backups\_bucket](#input\_create\_etcd\_backups\_bucket) | Set this to true to create a versioned and encrypted private bucket to store ETCD backups. | `bool` | `false` | no |
 
 ## Outputs

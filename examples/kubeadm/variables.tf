@@ -1,7 +1,7 @@
 variable "app_name" {
   type        = string
   description = "A name for various resources"
-  default     = "kube-lab"
+  default     = "k8s-lab"
 }
 
 variable "create_etcd_backups_bucket" {
