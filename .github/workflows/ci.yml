@@ -7,7 +7,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/antonbabenko/pre-commit-terraform:v1.96.2
+      image: ghcr.io/antonbabenko/pre-commit-terraform:latest
     defaults:
       run:
         shell: bash
@@ -20,6 +20,13 @@ jobs:
       - run: |
           git config --global --add safe.directory $GITHUB_WORKSPACE
           git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+
+      - name: Get changed files
+        id: file_changes
+        run: |
+          export DIFF=$(git diff --name-only origin/${{ github.base_ref }} ${{ github.sha }})
+          echo "Diff between ${{ github.base_ref }} and ${{ github.sha }}"
+          echo "files=$( echo "$DIFF" | xargs echo )" >> $GITHUB_OUTPUT
 
       - name: fix tar dependency in alpine container image
         run: |
@@ -35,4 +42,4 @@ jobs:
 
       - name: Execute pre-commit
         run: |
-          pre-commit run --color=always --show-diff-on-failure --all-files
+          pre-commit run --color=always --show-diff-on-failure --files ${{ steps.file_changes.outputs.files }}
