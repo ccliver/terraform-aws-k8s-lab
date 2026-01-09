@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.0.8"
+  version = "~> 21"
 
   name               = var.name
   kubernetes_version = var.kubernetes_version
@@ -56,8 +56,5 @@ module "eks" {
     }
   }
 
-  tags = {
-    Environment = "terraform-aws-k8s-lab"
-    Terraform   = "true"
-  }
+  tags = var.tags
 }

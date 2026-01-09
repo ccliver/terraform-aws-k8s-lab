@@ -14,7 +14,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_kube_lab"></a> [kube\_lab](#module\_kube\_lab) | ../.. | n/a |
+| <a name="module_k8s_lab"></a> [k8s\_lab](#module\_k8s\_lab) | ../.. | n/a |
 
 ## Resources
 

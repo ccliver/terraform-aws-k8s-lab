@@ -47,6 +47,7 @@
 | <a name="input_min_node_instances"></a> [min\_node\_instances](#input\_min\_node\_instances) | The minimum number of nodes to launch | `number` | `1` | no |
 | <a name="input_node_instance_type"></a> [node\_instance\_type](#input\_node\_instance\_type) | The instance type to use for nodes | `string` | `"t3a.small"` | no |
 | <a name="input_private_subnet_cidrs"></a> [private\_subnet\_cidrs](#input\_private\_subnet\_cidrs) | Private subnet IP ranges. | `list(any)` | <pre>[<br/>  "172.31.48.0/20",<br/>  "172.31.64.0/20",<br/>  "172.31.80.0/20"<br/>]</pre> | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | The name of the overall project | `string` | `"k8s-lab"` | no |
 | <a name="input_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#input\_public\_subnet\_cidrs) | Public subnet IP ranges. | `list(any)` | <pre>[<br/>  "172.31.0.0/20",<br/>  "172.31.16.0/20",<br/>  "172.31.32.0/20"<br/>]</pre> | no |
 | <a name="input_ubuntu_version"></a> [ubuntu\_version](#input\_ubuntu\_version) | Image location: `aws ec2 describe-images --region us-east-1 --owners 099720109477` | `string` | `"ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-202*"` | no |
 | <a name="input_use_eks"></a> [use\_eks](#input\_use\_eks) | Create a managed EKS control plane and managed node group | `bool` | `false` | no |
