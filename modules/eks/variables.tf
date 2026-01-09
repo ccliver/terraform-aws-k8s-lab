@@ -47,3 +47,9 @@ variable "instance_types" {
   description = "List of instance types to use in the managed node group"
   default     = []
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "A map of tags to add to all resources created in the module"
+  default     = {}
+}

@@ -4,6 +4,12 @@ variable "app_name" {
   default     = "k8s-lab"
 }
 
+variable "project_name" {
+  type        = string
+  description = "The name of the overall project"
+  default     = "k8s-lab"
+}
+
 variable "control_plane_instance_type" {
   type        = string
   description = "The instance type to use for control plane"

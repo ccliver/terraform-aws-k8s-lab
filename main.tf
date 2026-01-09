@@ -10,7 +10,7 @@ locals {
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 6.0"
-  name    = "${var.app_name}-vpc"
+  name    = var.app_name
   cidr    = var.vpc_cidr
   azs = [
     local.azs[0],
@@ -23,8 +23,9 @@ module "vpc" {
   enable_nat_gateway         = true
   single_nat_gateway         = false
 
-  vpc_tags = {
-    Name = "${var.app_name}-vpc"
+  tags = {
+    Name    = var.app_name
+    Project = var.project_name
   }
 }
 
@@ -41,7 +42,7 @@ module "kubeadm" {
   max_node_instances          = var.max_node_instances
   min_node_instances          = var.min_node_instances
   api_allowed_cidrs           = var.api_allowed_cidrs
-  kubernetes_version          = var.kubernetes_version
+  kubernetes_version          = "1.35"
   public_subnets              = module.vpc.public_subnets
   private_subnets             = module.vpc.private_subnets
   create_etcd_backups_bucket  = var.create_etcd_backups_bucket
@@ -62,4 +63,8 @@ module "eks" {
   min_size                     = var.eks_min_size
   max_size                     = var.eks_max_size
   instance_types               = var.instance_types
+
+  tags = {
+    Project = var.project_name
+  }
 }
