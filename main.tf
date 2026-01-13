@@ -42,7 +42,7 @@ module "kubeadm" {
   max_node_instances          = var.max_node_instances
   min_node_instances          = var.min_node_instances
   api_allowed_cidrs           = var.api_allowed_cidrs
-  kubernetes_version          = "1.35"
+  kubernetes_version          = var.kubernetes_version
   public_subnets              = module.vpc.public_subnets
   private_subnets             = module.vpc.private_subnets
   create_etcd_backups_bucket  = var.create_etcd_backups_bucket
