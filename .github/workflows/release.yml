@@ -9,6 +9,7 @@ on:
       - '**/*.tpl'
       - '**/*.tf'
       - '.github/workflows/release.yml'
+      - '.releaserc.json'
 
 jobs:
   release:
