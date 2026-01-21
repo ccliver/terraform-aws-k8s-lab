@@ -110,4 +110,9 @@ variable "eks_capacity_type" {
   type        = string
   description = "The capacity type for the managed node group. Valid values are 'ON_DEMAND' and 'SPOT'"
   default     = "ON_DEMAND"
+
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_capacity_type)
+    error_message = "Valid values are 'ON_DEMAND' and 'SPOT'"
+  }
 }
