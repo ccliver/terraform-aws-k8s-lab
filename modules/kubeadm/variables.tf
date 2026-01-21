@@ -64,3 +64,9 @@ variable "ubuntu_version" {
   type        = string
   description = "Image location: `aws ec2 describe-images --region us-east-1 --owners 099720109477`"
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "A map of tags to add to all resources created in the module"
+  default     = {}
+}

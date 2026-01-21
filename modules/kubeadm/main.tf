@@ -220,9 +220,9 @@ resource "aws_ssm_parameter" "join_string" {
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
-  tags = {
+  tags = merge(var.tags, {
     Name = var.app_name
-  }
+  })
 
   lifecycle {
     ignore_changes = [value]
@@ -235,9 +235,9 @@ resource "aws_ssm_parameter" "ca_cert" {
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
-  tags = {
+  tags = merge(var.tags, {
     Name = var.app_name
-  }
+  })
 }
 
 resource "aws_ssm_parameter" "client_cert" {
@@ -246,9 +246,9 @@ resource "aws_ssm_parameter" "client_cert" {
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
-  tags = {
+  tags = merge(var.tags, {
     Name = var.app_name
-  }
+  })
 }
 
 resource "aws_ssm_parameter" "client_key" {
@@ -379,10 +379,10 @@ resource "aws_instance" "control_plane" {
     http_tokens = "required"
   }
 
-  tags = {
+  tags = merge(var.tags, {
     Name        = "${var.app_name}-control-plane"
     Environment = "terraform-aws-k8s-lab"
-  }
+  })
 }
 
 resource "aws_launch_template" "nodes" {
@@ -431,9 +431,9 @@ resource "aws_launch_template" "nodes" {
   tag_specifications {
     resource_type = "instance"
 
-    tags = {
+    tags = merge(var.tags, {
       Name = "${var.app_name}-node"
-    }
+    })
   }
 
   user_data = base64encode(templatefile("${path.module}/node_userdata.tpl", {
@@ -466,12 +466,25 @@ resource "aws_autoscaling_group" "bar" {
     value               = "terraform-aws-k8s-lab"
     propagate_at_launch = true
   }
+
+  dynamic "tag" {
+    for_each = var.tags
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
 }
 
 resource "aws_s3_bucket" "etcd_backups" {
   count = var.create_etcd_backups_bucket ? 1 : 0
 
   bucket = "etcd-backups-${uuid()}"
+
+  tags = merge(var.tags, {
+    Name = "${var.app_name}-node"
+  })
 }
 
 resource "aws_s3_bucket_public_access_block" "etcd_backups" {
