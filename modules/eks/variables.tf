@@ -53,3 +53,9 @@ variable "tags" {
   description = "A map of tags to add to all resources created in the module"
   default     = {}
 }
+
+variable "capacity_type" {
+  type        = string
+  description = "The capacity type for the managed node group. Valid values are 'ON_DEMAND' and 'SPOT'"
+  default     = "ON_DEMAND"
+}
