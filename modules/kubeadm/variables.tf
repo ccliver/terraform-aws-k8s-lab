@@ -1,11 +1,11 @@
+variable "project" {
+  type        = string
+  description = "The name of the project"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID"
-}
-
-variable "app_name" {
-  type        = string
-  description = "A name for various resources"
 }
 
 variable "control_plane_instance_type" {

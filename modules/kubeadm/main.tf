@@ -19,7 +19,7 @@ locals {
 }
 
 resource "aws_security_group" "endpoints" {
-  name        = "${var.app_name}-endpoints"
+  name        = "${var.project}-endpoints"
   description = "VPC endpoint security group"
   vpc_id      = var.vpc_id
 
@@ -67,7 +67,7 @@ resource "aws_vpc_endpoint" "ec2messages" {
 
 #trivy:ignore:AVD-AWS-0104
 resource "aws_security_group" "control_plane" {
-  name        = "${var.app_name}-control-plane"
+  name        = "${var.project}-control-plane"
   description = "Control plane security group"
   vpc_id      = var.vpc_id
 
@@ -148,7 +148,7 @@ resource "aws_security_group" "control_plane" {
 
 #trivy:ignore:AVD-AWS-0104
 resource "aws_security_group" "nodes" {
-  name        = "${var.app_name}-nodes"
+  name        = "${var.project}-nodes"
   description = "Worker node security group"
   vpc_id      = var.vpc_id
 
@@ -215,13 +215,13 @@ resource "aws_security_group_rule" "weavenet_2" {
 }
 
 resource "aws_ssm_parameter" "join_string" {
-  name        = "/${var.app_name}/kubeadm/join-string"
+  name        = "/${var.project}/kubeadm/join-string"
   description = "The command and token nodes use to join the cluster"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
   tags = merge(var.tags, {
-    Name = var.app_name
+    Name = var.project
   })
 
   lifecycle {
@@ -230,35 +230,35 @@ resource "aws_ssm_parameter" "join_string" {
 }
 
 resource "aws_ssm_parameter" "ca_cert" {
-  name        = "/${var.app_name}/kubectl/certificate-authority-data"
+  name        = "/${var.project}/kubectl/certificate-authority-data"
   description = "kubectl CA cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
   tags = merge(var.tags, {
-    Name = var.app_name
+    Name = var.project
   })
 }
 
 resource "aws_ssm_parameter" "client_cert" {
-  name        = "/${var.app_name}/kubectl/client-certificate-data"
+  name        = "/${var.project}/kubectl/client-certificate-data"
   description = "kubectl client cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
   tags = merge(var.tags, {
-    Name = var.app_name
+    Name = var.project
   })
 }
 
 resource "aws_ssm_parameter" "client_key" {
-  name        = "/${var.app_name}/kubectl/client-key-data"
+  name        = "/${var.project}/kubectl/client-key-data"
   description = "kubectl client cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
   tags = {
-    Name = var.app_name
+    Name = var.project
   }
 }
 
@@ -297,7 +297,7 @@ data "aws_iam_policy_document" "control_plane" {
 }
 
 resource "aws_iam_role" "control_plane" {
-  name               = "${var.app_name}-control-plane"
+  name               = "${var.project}-control-plane"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
@@ -314,7 +314,7 @@ resource "aws_iam_role_policy_attachment" "control_plane" {
 }
 
 resource "aws_iam_instance_profile" "control_plane" {
-  name = "${var.app_name}-control-plane"
+  name = "${var.project}-control-plane"
   role = aws_iam_role.control_plane.name
 }
 
@@ -337,7 +337,7 @@ data "aws_iam_policy_document" "nodes" {
 }
 
 resource "aws_iam_role" "nodes" {
-  name               = "${var.app_name}-nodes"
+  name               = "${var.project}-nodes"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
@@ -354,7 +354,7 @@ resource "aws_iam_role_policy_attachment" "nodes" {
 }
 
 resource "aws_iam_instance_profile" "nodes" {
-  name = "${var.app_name}-nodes"
+  name = "${var.project}-nodes"
   role = aws_iam_role.nodes.name
 }
 
@@ -364,7 +364,7 @@ resource "aws_instance" "control_plane" {
   vpc_security_group_ids = [aws_security_group.control_plane.id]
   subnet_id              = var.public_subnets[0]
   user_data = templatefile("${path.module}/control_plane_userdata.tpl", {
-    hostname                = "${var.app_name}-control-plane",
+    hostname                = "${var.project}-control-plane",
     region                  = local.region,
     kubernetes_version      = substr(var.kubernetes_version, 0, 4)
     kubernetes_version_full = var.kubernetes_version
@@ -380,13 +380,13 @@ resource "aws_instance" "control_plane" {
   }
 
   tags = merge(var.tags, {
-    Name        = "${var.app_name}-control-plane"
+    Name        = "${var.project}-control-plane"
     Environment = "terraform-aws-k8s-lab"
   })
 }
 
 resource "aws_launch_template" "nodes" {
-  name = "${var.app_name}-nodes"
+  name = "${var.project}-nodes"
 
   capacity_reservation_specification {
     capacity_reservation_preference = "none"
@@ -432,7 +432,7 @@ resource "aws_launch_template" "nodes" {
     resource_type = "instance"
 
     tags = merge(var.tags, {
-      Name = "${var.app_name}-node"
+      Name = "${var.project}-node"
     })
   }
 
@@ -444,7 +444,7 @@ resource "aws_launch_template" "nodes" {
 }
 
 resource "aws_autoscaling_group" "bar" {
-  name                      = "${var.app_name}-nodes"
+  name                      = "${var.project}-nodes"
   max_size                  = var.max_node_instances
   min_size                  = var.min_node_instances
   desired_capacity          = var.min_node_instances
@@ -483,7 +483,7 @@ resource "aws_s3_bucket" "etcd_backups" {
   bucket = "etcd-backups-${uuid()}"
 
   tags = merge(var.tags, {
-    Name = "${var.app_name}-node"
+    Name = "${var.project}-node"
   })
 }
 

@@ -32,7 +32,8 @@ module "eks" {
       max_size = var.max_size
       # This value is ignored after the initial creation
       # https://github.com/bryantbiggs/eks-desired-size-hack
-      desired_size = var.min_size
+      desired_size  = var.min_size
+      capacity_type = var.capacity_type
     }
 
   }

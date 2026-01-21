@@ -10,7 +10,7 @@ locals {
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 6.0"
-  name    = var.app_name
+  name    = var.project
   cidr    = var.vpc_cidr
   azs = [
     local.azs[0],
@@ -24,8 +24,7 @@ module "vpc" {
   single_nat_gateway         = false
 
   tags = {
-    Name    = var.app_name
-    Project = var.project_name
+    Project = var.project
   }
 }
 
@@ -34,7 +33,7 @@ module "kubeadm" {
 
   source = "./modules/kubeadm"
 
-  app_name                    = var.app_name
+  project                     = var.project
   vpc_id                      = module.vpc.vpc_id
   vpc_cidr                    = var.vpc_cidr
   control_plane_instance_type = var.control_plane_instance_type
@@ -49,7 +48,7 @@ module "kubeadm" {
   ubuntu_version              = var.ubuntu_version
 
   tags = {
-    Project = var.project_name
+    Project = var.project
   }
 }
 
@@ -58,7 +57,7 @@ module "eks" {
 
   source = "./modules/eks"
 
-  name                         = var.app_name
+  name                         = var.project
   kubernetes_version           = substr(var.kubernetes_version, 0, 4)
   vpc_id                       = module.vpc.vpc_id
   public_subnets               = module.vpc.public_subnets
@@ -67,8 +66,9 @@ module "eks" {
   min_size                     = var.eks_min_size
   max_size                     = var.eks_max_size
   instance_types               = var.instance_types
+  capacity_type                = var.eks_capacity_type
 
   tags = {
-    Project = var.project_name
+    Project = var.project
   }
 }

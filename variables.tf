@@ -1,12 +1,6 @@
-variable "app_name" {
+variable "project" {
   type        = string
-  description = "A name for various resources"
-  default     = "k8s-lab"
-}
-
-variable "project_name" {
-  type        = string
-  description = "The name of the overall project"
+  description = "The name of the project"
   default     = "k8s-lab"
 }
 
@@ -110,4 +104,10 @@ variable "ubuntu_version" {
   type        = string
   description = "Image location: `aws ec2 describe-images --region us-east-1 --owners 099720109477`"
   default     = "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-202*"
+}
+
+variable "eks_capacity_type" {
+  type        = string
+  description = "The capacity type for the managed node group. Valid values are 'ON_DEMAND' and 'SPOT'"
+  default     = "ON_DEMAND"
 }
