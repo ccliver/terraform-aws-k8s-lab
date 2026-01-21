@@ -116,3 +116,9 @@ variable "eks_capacity_type" {
     error_message = "Valid values are 'ON_DEMAND' and 'SPOT'"
   }
 }
+
+variable "eks_node_group_ami_type" {
+  type        = string
+  description = "The AMI type for the managed node group. See https://github.com/awslabs/amazon-eks-ami/releases for valid values"
+  default     = "AL2023_x86_64_STANDARD"
+}

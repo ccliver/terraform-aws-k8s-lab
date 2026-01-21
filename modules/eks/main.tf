@@ -34,6 +34,7 @@ module "eks" {
       # https://github.com/bryantbiggs/eks-desired-size-hack
       desired_size  = var.min_size
       capacity_type = var.capacity_type
+      ami_type      = var.eks_node_group_ami_type
     }
 
   }

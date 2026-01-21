@@ -67,6 +67,7 @@ module "eks" {
   max_size                     = var.eks_max_size
   instance_types               = var.instance_types
   capacity_type                = var.eks_capacity_type
+  eks_node_group_ami_type      = var.eks_node_group_ami_type
 
   tags = {
     Project = var.project

@@ -59,3 +59,8 @@ variable "capacity_type" {
   description = "The capacity type for the managed node group. Valid values are 'ON_DEMAND' and 'SPOT'"
   default     = "ON_DEMAND"
 }
+
+variable "eks_node_group_ami_type" {
+  type        = string
+  description = "The AMI type for the managed node group"
+}
