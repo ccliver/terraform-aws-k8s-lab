@@ -47,6 +47,10 @@ module "kubeadm" {
   private_subnets             = module.vpc.private_subnets
   create_etcd_backups_bucket  = var.create_etcd_backups_bucket
   ubuntu_version              = var.ubuntu_version
+
+  tags = {
+    Project = var.project_name
+  }
 }
 
 module "eks" {
