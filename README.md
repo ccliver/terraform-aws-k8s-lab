@@ -60,6 +60,8 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_cluster_certificate_authority_data"></a> [cluster\_certificate\_authority\_data](#output\_cluster\_certificate\_authority\_data) | The certificate authority data for the EKS cluster |
+| <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | The endpoint for the EKS cluster |
 | <a name="output_control_plane_id"></a> [control\_plane\_id](#output\_control\_plane\_id) | The control plane's instance id |
 | <a name="output_control_plane_public_ip"></a> [control\_plane\_public\_ip](#output\_control\_plane\_public\_ip) | The control plane's public IP |
 | <a name="output_eks_outputs"></a> [eks\_outputs](#output\_eks\_outputs) | The ARN of the IAM Role created for the AWS Load Balancer Controller |
