@@ -98,7 +98,7 @@ resource "aws_iam_role_policy" "aws_lbc" {
   name = "aws-lbc-policy"
   role = aws_iam_role.aws_lbc[0].id
   # https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.17.0/docs/install/iam_policy.json
-  policy = jsonencode(templatefile("${path.module}/policies/aws-lbc-policy.json", {
+  policy = templatefile("${path.module}/policies/aws-lbc-policy.json", {
     vpc_id = var.vpc_id
-  }))
+  })
 }
