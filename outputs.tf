@@ -18,9 +18,9 @@ output "kubectl_cert_data_ssm_parameters" {
   value       = try(module.kubeadm[0].kubectl_cert_data_ssm_parameters, null)
 }
 
-output "eks_outputs" {
+output "aws_lbc_role_arn" {
   description = "The ARN of the IAM Role created for the AWS Load Balancer Controller"
-  value       = try(module.eks[0], null)
+  value       = try(module.eks[0].aws_lbc_role_arn, null)
 }
 
 output "cluster_endpoint" {
@@ -30,5 +30,6 @@ output "cluster_endpoint" {
 
 output "cluster_certificate_authority_data" {
   description = "The certificate authority data for the EKS cluster"
+  ephemeral   = true
   value       = try(module.eks[0].cluster_certificate_authority_data, null)
 }
