@@ -66,7 +66,7 @@ data "aws_iam_policy_document" "aws_lbc_trust" {
 
   statement {
     principals {
-      type        = "Federation"
+      type        = "Federated"
       identifiers = [module.eks.oidc_provider_arn]
     }
 
@@ -90,6 +90,8 @@ resource "aws_iam_role" "aws_lbc" {
 
   name               = "${var.name}-aws-lbc"
   assume_role_policy = data.aws_iam_policy_document.aws_lbc_trust[0].json
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy" "aws_lbc" {
