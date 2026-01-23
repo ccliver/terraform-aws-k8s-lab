@@ -30,6 +30,6 @@ output "cluster_endpoint" {
 
 output "cluster_certificate_authority_data" {
   description = "The certificate authority data for the EKS cluster"
-  ephemeral   = true
+  sensitive   = true
   value       = try(module.eks[0].cluster_certificate_authority_data, null)
 }
