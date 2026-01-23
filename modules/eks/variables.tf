@@ -64,3 +64,9 @@ variable "eks_node_group_ami_type" {
   type        = string
   description = "The AMI type for the managed node group"
 }
+
+variable "deploy_aws_lbc_role" {
+  type        = bool
+  description = "Set to true to deploy the IAM role for the AWS Load Balancer Controller"
+  default     = false
+}
