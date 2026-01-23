@@ -60,3 +60,45 @@ module "eks" {
 
   tags = var.tags
 }
+
+data "aws_iam_policy_document" "aws_lbc_trust" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  statement {
+    principals {
+      type        = "Federation"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:sub"
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    }
+  }
+}
+
+resource "aws_iam_role" "aws_lbc" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  name               = "${var.name}-aws-lbc"
+  assume_role_policy = data.aws_iam_policy_document.aws_lbc_trust[0].json
+}
+
+resource "aws_iam_role_policy" "aws_lbc" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  name = "aws-lbc-policy"
+  role = aws_iam_role.aws_lbc[0].id
+  # https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.17.0/docs/install/iam_policy.json
+  policy = jsonencode(templatefile("${path.module}/policies/aws-lbc-policy.json", {
+    vpc_id = var.vpc_id
+  }))
+}

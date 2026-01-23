@@ -37,6 +37,7 @@
 | <a name="input_api_allowed_cidrs"></a> [api\_allowed\_cidrs](#input\_api\_allowed\_cidrs) | A list of CIDRs granted access to the control plane API | `list(any)` | `[]` | no |
 | <a name="input_control_plane_instance_type"></a> [control\_plane\_instance\_type](#input\_control\_plane\_instance\_type) | The instance type to use for control plane | `string` | `"t3a.small"` | no |
 | <a name="input_create_etcd_backups_bucket"></a> [create\_etcd\_backups\_bucket](#input\_create\_etcd\_backups\_bucket) | Set this to true to create a versioned and encrypted private bucket to store ETCD backups. | `bool` | `false` | no |
+| <a name="input_deploy_aws_lbc_role"></a> [deploy\_aws\_lbc\_role](#input\_deploy\_aws\_lbc\_role) | Set to true to deploy the IAM role for the AWS Load Balancer Controller | `bool` | `false` | no |
 | <a name="input_eks_capacity_type"></a> [eks\_capacity\_type](#input\_eks\_capacity\_type) | The capacity type for the managed node group. Valid values are 'ON\_DEMAND' and 'SPOT' | `string` | `"ON_DEMAND"` | no |
 | <a name="input_eks_max_size"></a> [eks\_max\_size](#input\_eks\_max\_size) | Maximum number of nodes in EKS managed node group | `number` | `3` | no |
 | <a name="input_eks_min_size"></a> [eks\_min\_size](#input\_eks\_min\_size) | Minimum number of nodes in EKS managed node group | `number` | `1` | no |
