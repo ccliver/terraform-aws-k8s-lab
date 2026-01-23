@@ -17,3 +17,8 @@ output "kubectl_cert_data_ssm_parameters" {
   description = "List of SSM Parameter ARNs containing cert data for kubectl config. This will only be populated if `var.use_kubeadm=true"
   value       = try(module.kubeadm[0].kubectl_cert_data_ssm_parameters, null)
 }
+
+output "eks_outputs" {
+  description = "The ARN of the IAM Role created for the AWS Load Balancer Controller"
+  value       = try(module.eks[0], null)
+}
