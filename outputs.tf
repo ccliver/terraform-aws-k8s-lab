@@ -32,3 +32,8 @@ output "cluster_certificate_authority_data" {
   description = "The certificate authority data for the EKS cluster"
   value       = try(module.eks[0].cluster_certificate_authority_data, null)
 }
+
+output "vpc_id" {
+  description = "ID of the VPC the cluster is deployed to"
+  value       = module.vpc.vpc_id
+}
