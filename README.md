@@ -60,11 +60,12 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_aws_lbc_role_arn"></a> [aws\_lbc\_role\_arn](#output\_aws\_lbc\_role\_arn) | The ARN of the IAM Role created for the AWS Load Balancer Controller |
 | <a name="output_cluster_certificate_authority_data"></a> [cluster\_certificate\_authority\_data](#output\_cluster\_certificate\_authority\_data) | The certificate authority data for the EKS cluster |
 | <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | The endpoint for the EKS cluster |
 | <a name="output_control_plane_id"></a> [control\_plane\_id](#output\_control\_plane\_id) | The control plane's instance id |
 | <a name="output_control_plane_public_ip"></a> [control\_plane\_public\_ip](#output\_control\_plane\_public\_ip) | The control plane's public IP |
-| <a name="output_eks_outputs"></a> [eks\_outputs](#output\_eks\_outputs) | The ARN of the IAM Role created for the AWS Load Balancer Controller |
 | <a name="output_etcd_backup_bucket"></a> [etcd\_backup\_bucket](#output\_etcd\_backup\_bucket) | S3 bucket to save ETCD backups to |
 | <a name="output_kubectl_cert_data_ssm_parameters"></a> [kubectl\_cert\_data\_ssm\_parameters](#output\_kubectl\_cert\_data\_ssm\_parameters) | List of SSM Parameter ARNs containing cert data for kubectl config. This will only be populated if `var.use_kubeadm=true` |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC the cluster is deployed to |
 <!-- END_TF_DOCS -->
