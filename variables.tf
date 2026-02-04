@@ -128,3 +128,9 @@ variable "deploy_aws_lbc_role" {
   description = "Set to true to deploy the IAM role for the AWS Load Balancer Controller"
   default     = false
 }
+
+variable "single_nat_gateway" {
+  type        = bool
+  description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"
+  default     = true
+}
