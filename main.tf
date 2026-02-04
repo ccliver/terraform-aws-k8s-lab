@@ -21,7 +21,7 @@ module "vpc" {
   private_subnets            = var.private_subnet_cidrs
   manage_default_network_acl = false
   enable_nat_gateway         = true
-  single_nat_gateway         = false
+  single_nat_gateway         = var.single_nat_gateway
 
   tags = {
     Project = var.project
