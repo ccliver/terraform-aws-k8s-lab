@@ -129,6 +129,12 @@ variable "deploy_aws_lbc_role" {
   default     = false
 }
 
+variable "alb_allowed_cidrs" {
+  type        = list(string)
+  description = "CIDRs allowed to access the ALB provisioned by the AWS Load Balancer Controller"
+  default     = []
+}
+
 variable "single_nat_gateway" {
   type        = bool
   description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"

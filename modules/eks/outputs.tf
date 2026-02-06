@@ -12,3 +12,8 @@ output "cluster_certificate_authority_data" {
   description = "The certificate authority data for the EKS cluster"
   value       = module.eks.cluster_certificate_authority_data
 }
+
+output "alb_security_group_id" {
+  description = "The ID of the security group created for the AWS Load Balancer Controller"
+  value       = try(aws_security_group.aws_lbc[0].id, null)
+}

@@ -69,6 +69,7 @@ module "eks" {
   capacity_type                = var.eks_capacity_type
   eks_node_group_ami_type      = var.eks_node_group_ami_type
   deploy_aws_lbc_role          = var.deploy_aws_lbc_role
+  alb_allowed_cidrs            = var.alb_allowed_cidrs
 
   tags = {
     Project = var.project

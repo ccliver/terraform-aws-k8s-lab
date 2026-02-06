@@ -37,3 +37,8 @@ output "vpc_id" {
   description = "ID of the VPC the cluster is deployed to"
   value       = module.vpc.vpc_id
 }
+
+output "alb_security_group_id" {
+  description = "The ID of the security group created for the AWS Load Balancer Controller"
+  value       = try(module.eks[0].alb_security_group_id, null)
+}
