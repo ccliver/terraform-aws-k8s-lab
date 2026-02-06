@@ -70,3 +70,9 @@ variable "deploy_aws_lbc_role" {
   description = "Set to true to deploy the IAM role for the AWS Load Balancer Controller"
   default     = false
 }
+
+variable "alb_allowed_cidrs" {
+  type        = list(string)
+  description = "CIDRs allowed to access the ALB provisioned by the AWS Load Balancer Controller"
+  default     = []
+}

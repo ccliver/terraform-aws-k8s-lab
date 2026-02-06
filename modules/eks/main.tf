@@ -104,3 +104,59 @@ resource "aws_iam_role_policy" "aws_lbc" {
     vpc_id = var.vpc_id
   })
 }
+
+resource "aws_security_group" "aws_lbc" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  name        = "${var.name}-aws-lbc-sg"
+  description = "Security group for AWS Load Balancer Controller"
+  vpc_id      = var.vpc_id
+
+  tags = merge(var.tags, {
+    Name = "${var.name}-aws-lbc-sg"
+  })
+}
+
+resource "aws_vpc_security_group_ingress_rule" "aws_lbc_allow_from_nodes" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  description                  = "Allow AWS Load Balancer Controller to receive traffic from EKS nodes"
+  from_port                    = 80
+  to_port                      = 80
+  ip_protocol                  = "tcp"
+  security_group_id            = aws_security_group.aws_lbc[0].id
+  referenced_security_group_id = module.eks.node_security_group_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "aws_lbc_allow_from_alb_allowed_cidrs_80" {
+  count = var.deploy_aws_lbc_role && length(var.alb_allowed_cidrs) > 0 ? length(var.alb_allowed_cidrs) : 0
+
+  description       = "Allow AWS Load Balancer Controller to receive traffic from ALB allowed CIDRs"
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
+  security_group_id = aws_security_group.aws_lbc[0].id
+  cidr_ipv4         = var.alb_allowed_cidrs[count.index]
+}
+
+resource "aws_vpc_security_group_ingress_rule" "aws_lbc_allow_from_alb_allowed_cidrs_443" {
+  count = var.deploy_aws_lbc_role && length(var.alb_allowed_cidrs) > 0 ? length(var.alb_allowed_cidrs) : 0
+
+  description       = "Allow AWS Load Balancer Controller to receive traffic from ALB allowed CIDRs"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
+  security_group_id = aws_security_group.aws_lbc[0].id
+  cidr_ipv4         = var.alb_allowed_cidrs[count.index]
+}
+
+resource "aws_vpc_security_group_egress_rule" "aws_lbc_allow_to_nodes" {
+  count = var.deploy_aws_lbc_role ? 1 : 0
+
+  description                  = "Allow AWS Load Balancer Controller to send traffic to EKS nodes"
+  from_port                    = 80
+  to_port                      = 80
+  ip_protocol                  = "tcp"
+  security_group_id            = aws_security_group.aws_lbc[0].id
+  referenced_security_group_id = module.eks.node_security_group_id
+}
