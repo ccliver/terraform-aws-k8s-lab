@@ -62,6 +62,7 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_alb_security_group_id"></a> [alb\_security\_group\_id](#output\_alb\_security\_group\_id) | The ID of the security group created for the AWS Load Balancer Controller |
 | <a name="output_aws_lbc_role_arn"></a> [aws\_lbc\_role\_arn](#output\_aws\_lbc\_role\_arn) | The ARN of the IAM Role created for the AWS Load Balancer Controller |
 | <a name="output_cluster_certificate_authority_data"></a> [cluster\_certificate\_authority\_data](#output\_cluster\_certificate\_authority\_data) | The certificate authority data for the EKS cluster |
 | <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | The endpoint for the EKS cluster |
