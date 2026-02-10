@@ -10,7 +10,6 @@ repos:
         args:
           - '--hook-config=--add-to-existing-file=true'
           - '--args=--lockfile=false'
-#        args:
       - id: terraform_tflint
       - id: terraform_trivy
         args:
