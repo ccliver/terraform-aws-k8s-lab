@@ -47,6 +47,14 @@ module "eks" {
       type        = "ingress"
       self        = true
     }
+    ingress_alb = {
+      description              = "Allow ALB to node all ports/protocols"
+      protocol                 = "tcp"
+      from_port                = 1024
+      to_port                  = 65535
+      type                     = "ingress"
+      source_security_group_id = aws_security_group.aws_lbc[0].id
+    }
     egress_all = {
       description      = "Node all egress"
       protocol         = "-1"
@@ -154,8 +162,8 @@ resource "aws_vpc_security_group_egress_rule" "aws_lbc_allow_to_nodes" {
   count = var.deploy_aws_lbc_role ? 1 : 0
 
   description                  = "Allow AWS Load Balancer Controller to send traffic to EKS nodes"
-  from_port                    = 80
-  to_port                      = 80
+  from_port                    = 1024
+  to_port                      = 65535
   ip_protocol                  = "tcp"
   security_group_id            = aws_security_group.aws_lbc[0].id
   referenced_security_group_id = module.eks.node_security_group_id
