@@ -50,6 +50,8 @@ module "kubeadm" {
   tags = {
     Project = var.project
   }
+
+  depends_on = [module.vpc]
 }
 
 module "eks" {
@@ -74,4 +76,6 @@ module "eks" {
   tags = {
     Project = var.project
   }
+
+  depends_on = [module.vpc]
 }
