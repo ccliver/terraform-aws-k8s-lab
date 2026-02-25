@@ -76,3 +76,9 @@ variable "alb_allowed_cidrs" {
   description = "CIDRs allowed to access the ALB provisioned by the AWS Load Balancer Controller"
   default     = []
 }
+
+variable "deploy_cluster_autoscaler_role" {
+  type        = bool
+  description = "Set to true to deploy the IAM role for the Cluster Autoscaler"
+  default     = false
+}
