@@ -140,3 +140,9 @@ variable "single_nat_gateway" {
   description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"
   default     = true
 }
+
+variable "deploy_cluster_autoscaler_role" {
+  type        = bool
+  description = "Set to true to deploy the IAM role for the Cluster Autoscaler"
+  default     = false
+}
