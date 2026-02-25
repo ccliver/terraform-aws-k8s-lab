@@ -42,3 +42,8 @@ output "alb_security_group_id" {
   description = "The ID of the security group created for the AWS Load Balancer Controller"
   value       = try(module.eks[0].alb_security_group_id, null)
 }
+
+output "cluster_autoscaler_role_arn" {
+  description = "The ARN of the IAM Role created for the Cluster Autoscaler"
+  value       = try(module.eks[0].cluster_autoscaler_role_arn, null)
+}
