@@ -11,6 +11,8 @@ repos:
           - '--hook-config=--add-to-existing-file=true'
           - '--args=--lockfile=false'
       - id: terraform_tflint
+        args:
+          - '--args=--init'
       - id: terraform_trivy
         args:
           - '--args=--tf-exclude-downloaded-modules'
