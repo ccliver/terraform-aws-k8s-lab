@@ -45,6 +45,7 @@
 | <a name="input_eks_min_size"></a> [eks\_min\_size](#input\_eks\_min\_size) | Minimum number of nodes in EKS managed node group | `number` | `1` | no |
 | <a name="input_eks_node_group_ami_type"></a> [eks\_node\_group\_ami\_type](#input\_eks\_node\_group\_ami\_type) | The AMI type for the managed node group. See https://github.com/awslabs/amazon-eks-ami/releases for valid values | `string` | `"AL2023_x86_64_STANDARD"` | no |
 | <a name="input_endpoint_public_access_cidrs"></a> [endpoint\_public\_access\_cidrs](#input\_endpoint\_public\_access\_cidrs) | List of CIDR blocks which can access the Amazon EKS public API server endpoint | `list(string)` | `[]` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | The name of the deployment environment (e.g. lab, dev, staging, prod) | `string` | `"k8s-lab"` | no |
 | <a name="input_instance_types"></a> [instance\_types](#input\_instance\_types) | List of instance types to use in the managed node group | `list(string)` | `[]` | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | The version of Kubernetes and associated tools to deploy | `string` | `"1.33.0-1.1"` | no |
 | <a name="input_max_node_instances"></a> [max\_node\_instances](#input\_max\_node\_instances) | The maximum number of nodes to launch | `number` | `3` | no |

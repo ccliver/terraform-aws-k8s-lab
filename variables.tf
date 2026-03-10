@@ -4,6 +4,12 @@ variable "project" {
   default     = "k8s-lab"
 }
 
+variable "environment" {
+  type        = string
+  description = "The name of the deployment environment (e.g. lab, dev, staging, prod)"
+  default     = "k8s-lab"
+}
+
 variable "control_plane_instance_type" {
   type        = string
   description = "The instance type to use for control plane"
