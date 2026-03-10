@@ -23,7 +23,8 @@ module "vpc" {
   single_nat_gateway         = var.single_nat_gateway
 
   tags = {
-    Project = var.project
+    Project     = var.project
+    Environment = var.environment
   }
 }
 
@@ -47,7 +48,8 @@ module "kubeadm" {
   ubuntu_version              = var.ubuntu_version
 
   tags = {
-    Project = var.project
+    Project     = var.project
+    Environment = var.environment
   }
 }
 
@@ -72,6 +74,7 @@ module "eks" {
   deploy_cluster_autoscaler_role = var.deploy_cluster_autoscaler_role
 
   tags = {
-    Project = var.project
+    Project     = var.project
+    Environment = var.environment
   }
 }
