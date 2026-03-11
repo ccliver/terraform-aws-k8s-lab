@@ -152,3 +152,9 @@ variable "deploy_cluster_autoscaler_role" {
   description = "Set to true to deploy the IAM role for the Cluster Autoscaler"
   default     = false
 }
+
+variable "deploy_ebs_csi_role" {
+  type        = bool
+  description = "Set to true to deploy the IAM role for the EBS CSI Driver"
+  default     = false
+}

@@ -72,6 +72,7 @@ module "eks" {
   deploy_aws_lbc_role            = var.deploy_aws_lbc_role
   alb_allowed_cidrs              = var.alb_allowed_cidrs
   deploy_cluster_autoscaler_role = var.deploy_cluster_autoscaler_role
+  deploy_ebs_csi_role            = var.deploy_ebs_csi_role
 
   tags = {
     Project     = var.project
