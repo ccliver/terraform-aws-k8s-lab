@@ -245,3 +245,167 @@ resource "aws_iam_role_policy" "cluster_autoscaler" {
   role   = aws_iam_role.cluster_autoscaler[0].id
   policy = data.aws_iam_policy_document.cluster_autoscaler_policy[0].json
 }
+
+data "aws_iam_policy_document" "ebs_csi_trust" {
+  count = var.deploy_ebs_csi_role ? 1 : 0
+
+  statement {
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:sub"
+      values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+    }
+  }
+}
+
+resource "aws_iam_role" "ebs_csi" {
+  count = var.deploy_ebs_csi_role ? 1 : 0
+
+  name               = "${var.name}-ebs-csi"
+  assume_role_policy = data.aws_iam_policy_document.ebs_csi_trust[0].json
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "ebs_csi_policy" {
+  count = var.deploy_ebs_csi_role ? 1 : 0
+
+  statement {
+    actions = [
+      "ec2:CreateSnapshot",
+      "ec2:AttachVolume",
+      "ec2:DetachVolume",
+      "ec2:ModifyVolume",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeInstances",
+      "ec2:DescribeSnapshots",
+      "ec2:DescribeTags",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeVolumesModifications"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "ec2:CreateTags"
+    ]
+
+    resources = [
+      "arn:aws:ec2:*:*:volume/*",
+      "arn:aws:ec2:*:*:snapshot/*"
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "ec2:CreateAction"
+      values = [
+        "CreateVolume",
+        "CreateSnapshot"
+      ]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:DeleteTags"
+    ]
+
+    resources = [
+      "arn:aws:ec2:*:*:volume/*",
+      "arn:aws:ec2:*:*:snapshot/*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "ec2:CreateVolume"
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "StringLike"
+      variable = "aws:RequestTag/ebs.csi.aws.com/cluster"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:DeleteVolume"
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "StringLike"
+      variable = "aws:ResourceTag/ebs.csi.aws.com/cluster"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    actions = [
+      "ec2:DeleteSnapshot"
+    ]
+
+    resources = ["*"]
+
+    condition {
+      test     = "StringLike"
+      variable = "ec2:ResourceTag/CSIVolumeSnapshotName"
+      values   = ["*"]
+    }
+  }
+
+  statement {
+    actions = [
+      "kms:CreateGrant",
+      "kms:ListGrants",
+      "kms:RevokeGrant"
+    ]
+
+    resources = ["arn:aws:kms:*:*:key/*"]
+
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+    }
+  }
+
+  statement {
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:CreateGrant",
+      "kms:DescribeKey"
+    ]
+
+    resources = ["arn:aws:kms:*:*:key/*"]
+  }
+}
+
+resource "aws_iam_role_policy" "ebs_csi" {
+  count = var.deploy_ebs_csi_role ? 1 : 0
+
+  name   = "ebs-csi-policy"
+  role   = aws_iam_role.ebs_csi[0].id
+  policy = data.aws_iam_policy_document.ebs_csi_policy[0].json
+}
