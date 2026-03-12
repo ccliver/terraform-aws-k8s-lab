@@ -47,3 +47,8 @@ output "cluster_autoscaler_role_arn" {
   description = "The ARN of the IAM Role created for the Cluster Autoscaler"
   value       = try(module.eks[0].cluster_autoscaler_role_arn, null)
 }
+
+output "ebs_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the EBS CSI Driver"
+  value       = try(module.eks[0].ebs_csi_role_arn, null)
+}
