@@ -8,9 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - uses: hashicorp/setup-terraform@v3
 
@@ -34,4 +31,4 @@ jobs:
           key: pre-commit-3|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Execute pre-commit
-        run: uvx pre-commit run --from-ref origin/${{ github.base_ref }} --to-ref ${{ github.event.pull_request.head.sha }} --show-diff-on-failure --color=always
+        run: uvx pre-commit run --all-files --show-diff-on-failure --color=always
