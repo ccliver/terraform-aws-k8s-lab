@@ -22,3 +22,8 @@ output "cluster_autoscaler_role_arn" {
   description = "The ARN of the IAM Role created for the Cluster Autoscaler"
   value       = try(aws_iam_role.cluster_autoscaler[0].arn, null)
 }
+
+output "ebs_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the EBS CSI Driver"
+  value       = try(aws_iam_role.ebs_csi[0].arn, null)
+}
