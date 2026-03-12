@@ -23,6 +23,9 @@ jobs:
       - name: Install trivy
         run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
+      - name: Initialize tflint plugins
+        run: tflint --init
+
       - uses: astral-sh/setup-uv@v5
 
       - uses: actions/cache@v4
