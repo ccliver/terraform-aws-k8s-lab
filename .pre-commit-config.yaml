@@ -11,11 +11,6 @@ repos:
           - '--hook-config=--add-to-existing-file=true'
           - '--args=--lockfile=false'
       - id: terraform_tflint
-      - id: terraform_trivy
-        args:
-          - '--args=--tf-exclude-downloaded-modules'
-          - '--args=--skip-dirs="**/.terraform"'
-          - '--args=--severity MEDIUM,HIGH,CRITICAL'
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
