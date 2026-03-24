@@ -65,7 +65,6 @@ resource "aws_vpc_endpoint" "ec2messages" {
   security_group_ids  = [aws_security_group.endpoints.id]
 }
 
-#trivy:ignore:AVD-AWS-0104
 resource "aws_security_group" "control_plane" {
   name        = "${var.project}-control-plane"
   description = "Control plane security group"
@@ -146,7 +145,6 @@ resource "aws_security_group" "control_plane" {
   }
 }
 
-#trivy:ignore:AVD-AWS-0104
 resource "aws_security_group" "nodes" {
   name        = "${var.project}-nodes"
   description = "Worker node security group"
