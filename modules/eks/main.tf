@@ -1,3 +1,11 @@
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+locals {
+  region     = data.aws_region.current.name
+  account_id = data.aws_caller_identity.current.account_id
+}
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21"
@@ -408,4 +416,80 @@ resource "aws_iam_role_policy" "ebs_csi" {
   name   = "ebs-csi-policy"
   role   = aws_iam_role.ebs_csi[0].id
   policy = data.aws_iam_policy_document.ebs_csi_policy[0].json
+}
+
+resource "aws_efs_file_system" "this" {
+  count = var.deploy_efs_csi_role ? 1 : 0
+
+  encrypted = true
+
+  lifecycle_policy {
+    transition_to_ia = "AFTER_30_DAYS"
+  }
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "efs_csi_trust" {
+  count = var.deploy_efs_csi_role ? 1 : 0
+
+  statement {
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:sub"
+      values   = ["system:serviceaccount:kube-system:efs-csi-controller-sa"]
+    }
+  }
+}
+
+resource "aws_iam_role" "efs_csi" {
+  count = var.deploy_efs_csi_role ? 1 : 0
+
+  name               = "${var.name}-efs-csi"
+  assume_role_policy = data.aws_iam_policy_document.efs_csi_trust[0].json
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "efs_csi_policy" {
+  count = var.deploy_efs_csi_role ? 1 : 0
+
+  statement {
+    actions = [
+      "elasticfilesystem:DescribeAccessPoints",
+      "elasticfilesystem:DescribeFileSystems",
+      "elasticfilesystem:DescribeMountTargets",
+      "ec2:DescribeAvailabilityZones"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
+      "elasticfilesystem:CreateAccessPoint",
+      "elasticfilesystem:DeleteAccessPoint",
+      "elasticfilesystem:TagResource"
+    ]
+    resources = ["arn:aws:elasticfilesystem:${local.region}:${local.account_id}:file-system/${aws_efs_file_system.this[0].id}"]
+  }
+}
+
+resource "aws_iam_role_policy" "efs_csi" {
+  count = var.deploy_efs_csi_role ? 1 : 0
+
+  name   = "efs-csi-policy"
+  role   = aws_iam_role.efs_csi[0].id
+  policy = data.aws_iam_policy_document.efs_csi_policy[0].json
 }
