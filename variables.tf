@@ -158,3 +158,9 @@ variable "deploy_ebs_csi_role" {
   description = "Set to true to deploy the IAM role for the EBS CSI Driver"
   default     = false
 }
+
+variable "deploy_efs_csi_role" {
+  type        = bool
+  description = "Set to true to deploy the IAM role for the EFS CSI Driver"
+  default     = false
+}
