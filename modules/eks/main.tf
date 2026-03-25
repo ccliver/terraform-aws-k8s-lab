@@ -2,8 +2,9 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  region     = data.aws_region.current.name
-  account_id = data.aws_caller_identity.current.account_id
+  region      = data.aws_region.current.name
+  account_id  = data.aws_caller_identity.current.account_id
+  efs_subnets = var.deploy_efs_csi_role ? toset(var.private_subnets) : toset([])
 }
 
 module "eks" {
@@ -105,7 +106,7 @@ resource "aws_security_group" "efs" {
 }
 
 resource "aws_efs_mount_target" "this" {
-  for_each = toset(var.private_subnets)
+  for_each = local.efs_subnets
 
   file_system_id  = aws_efs_file_system.this[0].id
   subnet_id       = each.value
