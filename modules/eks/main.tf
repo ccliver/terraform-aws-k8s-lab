@@ -2,7 +2,7 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  region      = data.aws_region.current.name
+  region      = data.aws_region.current.region
   account_id  = data.aws_caller_identity.current.account_id
   efs_subnets = var.deploy_efs_csi_role ? toset(var.private_subnets) : toset([])
 }
