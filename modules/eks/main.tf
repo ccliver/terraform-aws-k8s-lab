@@ -7,6 +7,7 @@ locals {
   efs_subnets = var.deploy_efs_csi_role ? toset(var.private_subnets) : toset([])
 }
 
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21"
