@@ -27,3 +27,13 @@ output "ebs_csi_role_arn" {
   description = "The ARN of the IAM Role created for the EBS CSI Driver"
   value       = try(aws_iam_role.ebs_csi[0].arn, null)
 }
+
+output "efs_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the EFS CSI Driver"
+  value       = try(aws_iam_role.efs_csi[0].arn, null)
+}
+
+output "efs_file_system_id" {
+  description = "The ID of the EFS file system created for the EFS CSI Driver"
+  value       = try(aws_efs_file_system.this[0].id, null)
+}
