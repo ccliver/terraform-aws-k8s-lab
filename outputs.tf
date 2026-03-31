@@ -52,3 +52,8 @@ output "ebs_csi_role_arn" {
   description = "The ARN of the IAM Role created for the EBS CSI Driver"
   value       = try(module.eks[0].ebs_csi_role_arn, null)
 }
+
+output "efs_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the EFS CSI Driver"
+  value       = try(module.eks[0].efs_csi_role_arn, null)
+}
