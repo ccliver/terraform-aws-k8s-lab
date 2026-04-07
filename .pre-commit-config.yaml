@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.100.0
+    rev: d0e12caebb2ab0ee8bf98181c8bfe9702bca103d # v1.105.0
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -16,3 +16,9 @@ repos:
     hooks:
       - id: check-merge-conflict
       - id: end-of-file-fixer
+
+repos:
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: ea2eb407b4cbce87cf0d502f36578950494f5ac9 # v1.23.1
+  hooks:
+    - id: zizmor
