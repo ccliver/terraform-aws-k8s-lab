@@ -391,7 +391,10 @@ data "aws_iam_policy_document" "efs_csi_policy" {
       "elasticfilesystem:DeleteAccessPoint",
       "elasticfilesystem:TagResource"
     ]
-    resources = ["arn:aws:elasticfilesystem:${local.region}:${local.account_id}:file-system/${aws_efs_file_system.this[0].id}"]
+    resources = [
+      "arn:aws:elasticfilesystem:${local.region}:${local.account_id}:file-system/${aws_efs_file_system.this[0].id}",
+      "arn:aws:elasticfilesystem:${local.region}:${local.account_id}:access-point/*"
+    ]
   }
 }
 
