@@ -11,14 +11,19 @@ repos:
           - '--hook-config=--add-to-existing-file=true'
           - '--args=--lockfile=false'
       - id: terraform_tflint
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c v6.0.0
     hooks:
       - id: check-merge-conflict
       - id: end-of-file-fixer
 
-repos:
-- repo: https://github.com/zizmorcore/zizmor-pre-commit
-  rev: ea2eb407b4cbce87cf0d502f36578950494f5ac9 # v1.23.1
-  hooks:
-    - id: zizmor
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: ea2eb407b4cbce87cf0d502f36578950494f5ac9 # v1.23.1
+    hooks:
+      - id: zizmor
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca # v1.7.12
+    hooks:
+      - id: actionlint
