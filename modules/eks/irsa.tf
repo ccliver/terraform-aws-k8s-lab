@@ -405,3 +405,56 @@ resource "aws_iam_role_policy" "efs_csi" {
   role   = aws_iam_role.efs_csi[0].id
   policy = data.aws_iam_policy_document.efs_csi_policy[0].json
 }
+
+data "aws_iam_policy_document" "secrets_manager_csi_trust" {
+  count = var.deploy_secrets_manager_csi_role ? 1 : 0
+
+  statement {
+    principals {
+      type        = "Federated"
+      identifiers = [module.eks.oidc_provider_arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "${module.eks.oidc_provider}:sub"
+      values   = ["system:serviceaccount:kube-system:secrets-manager-csi-controller-sa"]
+    }
+  }
+}
+
+resource "aws_iam_role" "secrets_manager_csi" {
+  count = var.deploy_secrets_manager_csi_role ? 1 : 0
+
+  name               = "${var.name}-secrets-manager-csi"
+  assume_role_policy = data.aws_iam_policy_document.secrets_manager_csi_trust[0].json
+
+  tags = var.tags
+}
+
+data "aws_iam_policy_document" "secrets_manager_csi_policy" {
+  for_each = toset(var.secret_arns)
+
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret"
+    ]
+    resources = [each.value]
+  }
+}
+
+resource "aws_iam_role_policy" "secrets_manager_csi" {
+  count = var.deploy_secrets_manager_csi_role ? 1 : 0
+
+  name   = "secrets-manager-csi-policy"
+  role   = aws_iam_role.secrets_manager_csi[0].id
+  policy = data.aws_iam_policy_document.secrets_manager_csi_policy[0].json
+}
