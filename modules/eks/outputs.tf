@@ -37,3 +37,8 @@ output "efs_file_system_id" {
   description = "The ID of the EFS file system created for the EFS CSI Driver"
   value       = try(aws_efs_file_system.this[0].id, null)
 }
+
+output "secrets_manager_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the Secrets Manager CSI Driver"
+  value       = try(aws_iam_role.secrets_manager_csi[0].arn, null)
+}

@@ -80,5 +80,6 @@
 | <a name="output_efs_file_system_id"></a> [efs\_file\_system\_id](#output\_efs\_file\_system\_id) | The ID of the EFS file system created for the EFS CSI Driver |
 | <a name="output_etcd_backup_bucket"></a> [etcd\_backup\_bucket](#output\_etcd\_backup\_bucket) | S3 bucket to save ETCD backups to |
 | <a name="output_kubectl_cert_data_ssm_parameters"></a> [kubectl\_cert\_data\_ssm\_parameters](#output\_kubectl\_cert\_data\_ssm\_parameters) | List of SSM Parameter ARNs containing cert data for kubectl config. This will only be populated if `var.use_kubeadm=true` |
+| <a name="output_secrets_manager_csi_role_arn"></a> [secrets\_manager\_csi\_role\_arn](#output\_secrets\_manager\_csi\_role\_arn) | The ARN of the IAM Role created for the Secrets Manager CSI Driver |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC the cluster is deployed to |
 <!-- END_TF_DOCS -->
