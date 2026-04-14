@@ -62,3 +62,8 @@ output "efs_file_system_id" {
   description = "The ID of the EFS file system created for the EFS CSI Driver"
   value       = try(module.eks[0].efs_file_system_id, null)
 }
+
+output "secrets_manager_csi_role_arn" {
+  description = "The ARN of the IAM Role created for the Secrets Manager CSI Driver"
+  value       = try(module.eks[0].secrets_manager_csi_role_arn, null)
+}
