@@ -22,9 +22,18 @@ module "eks" {
     eks-pod-identity-agent = {
       before_compute = true
     }
+
     kube-proxy = {}
+
     vpc-cni = {
       before_compute = true
+      most_recent    = true
+      configuration_values = jsonencode({
+        env = {
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
+      })
     }
   }
 
