@@ -425,7 +425,7 @@ data "aws_iam_policy_document" "secrets_manager_csi_trust" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:kube-system:secrets-manager-csi-controller-sa"]
+      values   = ["system:serviceaccount:kube-system:secrets-store-csi-driver"]
     }
   }
 }
