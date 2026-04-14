@@ -440,7 +440,7 @@ resource "aws_iam_role" "secrets_manager_csi" {
 }
 
 data "aws_iam_policy_document" "secrets_manager_csi_policy" {
-  for_each = toset(var.secret_arns)
+  for_each = local.secret_arns
 
   statement {
     actions = [
