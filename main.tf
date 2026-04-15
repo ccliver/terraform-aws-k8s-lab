@@ -58,24 +58,22 @@ module "eks" {
 
   source = "./modules/eks"
 
-  name                            = var.project
-  kubernetes_version              = substr(var.kubernetes_version, 0, 4)
-  vpc_id                          = module.vpc.vpc_id
-  public_subnets                  = module.vpc.public_subnets
-  private_subnets                 = module.vpc.private_subnets
-  endpoint_public_access_cidrs    = var.endpoint_public_access_cidrs
-  min_size                        = var.eks_min_size
-  max_size                        = var.eks_max_size
-  instance_types                  = var.instance_types
-  capacity_type                   = var.eks_capacity_type
-  eks_node_group_ami_type         = var.eks_node_group_ami_type
-  deploy_aws_lbc_role             = var.deploy_aws_lbc_role
-  alb_allowed_cidrs               = var.alb_allowed_cidrs
-  deploy_cluster_autoscaler_role  = var.deploy_cluster_autoscaler_role
-  deploy_ebs_csi_role             = var.deploy_ebs_csi_role
-  deploy_efs_csi_role             = var.deploy_efs_csi_role
-  deploy_secrets_manager_csi_role = var.deploy_secrets_manager_csi_role
-  secret_arns                     = var.secret_arns
+  name                           = var.project
+  kubernetes_version             = substr(var.kubernetes_version, 0, 4)
+  vpc_id                         = module.vpc.vpc_id
+  public_subnets                 = module.vpc.public_subnets
+  private_subnets                = module.vpc.private_subnets
+  endpoint_public_access_cidrs   = var.endpoint_public_access_cidrs
+  min_size                       = var.eks_min_size
+  max_size                       = var.eks_max_size
+  instance_types                 = var.instance_types
+  capacity_type                  = var.eks_capacity_type
+  eks_node_group_ami_type        = var.eks_node_group_ami_type
+  deploy_aws_lbc_role            = var.deploy_aws_lbc_role
+  alb_allowed_cidrs              = var.alb_allowed_cidrs
+  deploy_cluster_autoscaler_role = var.deploy_cluster_autoscaler_role
+  deploy_ebs_csi_role            = var.deploy_ebs_csi_role
+  deploy_efs_csi_role            = var.deploy_efs_csi_role
 
   tags = {
     Project     = var.project
