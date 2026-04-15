@@ -164,15 +164,3 @@ variable "deploy_efs_csi_role" {
   description = "Set to true to deploy the IAM role for the EFS CSI Driver"
   default     = false
 }
-
-variable "deploy_secrets_manager_csi_role" {
-  type        = bool
-  description = "Set to true to deploy the IAM role for the Secrets Manager CSI Driver"
-  default     = false
-}
-
-variable "secret_arns" {
-  type        = list(string)
-  description = "List of Secrets Manager secret ARNs to grant access to via the Secrets Manager CSI Driver IAM role"
-  default     = []
-}

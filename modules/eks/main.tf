@@ -5,7 +5,6 @@ locals {
   region      = data.aws_region.current.region
   account_id  = data.aws_caller_identity.current.account_id
   efs_subnets = var.deploy_efs_csi_role ? { for idx, s in var.private_subnets : tostring(idx) => s } : {}
-  secret_arns = var.deploy_secrets_manager_csi_role ? { for idx, s in var.secret_arns : tostring(idx) => s } : {}
 }
 
 

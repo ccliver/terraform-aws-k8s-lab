@@ -42,7 +42,6 @@
 | <a name="input_deploy_cluster_autoscaler_role"></a> [deploy\_cluster\_autoscaler\_role](#input\_deploy\_cluster\_autoscaler\_role) | Set to true to deploy the IAM role for the Cluster Autoscaler | `bool` | `false` | no |
 | <a name="input_deploy_ebs_csi_role"></a> [deploy\_ebs\_csi\_role](#input\_deploy\_ebs\_csi\_role) | Set to true to deploy the IAM role for the EBS CSI Driver | `bool` | `false` | no |
 | <a name="input_deploy_efs_csi_role"></a> [deploy\_efs\_csi\_role](#input\_deploy\_efs\_csi\_role) | Set to true to deploy the IAM role for the EFS CSI Driver | `bool` | `false` | no |
-| <a name="input_deploy_secrets_manager_csi_role"></a> [deploy\_secrets\_manager\_csi\_role](#input\_deploy\_secrets\_manager\_csi\_role) | Set to true to deploy the IAM role for the Secrets Manager CSI Driver | `bool` | `false` | no |
 | <a name="input_eks_capacity_type"></a> [eks\_capacity\_type](#input\_eks\_capacity\_type) | The capacity type for the managed node group. Valid values are 'ON\_DEMAND' and 'SPOT' | `string` | `"ON_DEMAND"` | no |
 | <a name="input_eks_max_size"></a> [eks\_max\_size](#input\_eks\_max\_size) | Maximum number of nodes in EKS managed node group | `number` | `3` | no |
 | <a name="input_eks_min_size"></a> [eks\_min\_size](#input\_eks\_min\_size) | Minimum number of nodes in EKS managed node group | `number` | `1` | no |
@@ -57,7 +56,6 @@
 | <a name="input_private_subnet_cidrs"></a> [private\_subnet\_cidrs](#input\_private\_subnet\_cidrs) | Private subnet IP ranges. | `list(any)` | <pre>[<br/>  "172.31.48.0/20",<br/>  "172.31.64.0/20",<br/>  "172.31.80.0/20"<br/>]</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the project | `string` | `"k8s-lab"` | no |
 | <a name="input_public_subnet_cidrs"></a> [public\_subnet\_cidrs](#input\_public\_subnet\_cidrs) | Public subnet IP ranges. | `list(any)` | <pre>[<br/>  "172.31.0.0/20",<br/>  "172.31.16.0/20",<br/>  "172.31.32.0/20"<br/>]</pre> | no |
-| <a name="input_secret_arns"></a> [secret\_arns](#input\_secret\_arns) | List of Secrets Manager secret ARNs to grant access to via the Secrets Manager CSI Driver IAM role | `list(string)` | `[]` | no |
 | <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | Should be true if you want to provision a single shared NAT Gateway across all of your private networks | `bool` | `true` | no |
 | <a name="input_ubuntu_version"></a> [ubuntu\_version](#input\_ubuntu\_version) | Image location: `aws ec2 describe-images --region us-east-1 --owners 099720109477` | `string` | `"ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-202*"` | no |
 | <a name="input_use_eks"></a> [use\_eks](#input\_use\_eks) | Create a managed EKS control plane and managed node group | `bool` | `false` | no |
@@ -80,6 +78,7 @@
 | <a name="output_efs_file_system_id"></a> [efs\_file\_system\_id](#output\_efs\_file\_system\_id) | The ID of the EFS file system created for the EFS CSI Driver |
 | <a name="output_etcd_backup_bucket"></a> [etcd\_backup\_bucket](#output\_etcd\_backup\_bucket) | S3 bucket to save ETCD backups to |
 | <a name="output_kubectl_cert_data_ssm_parameters"></a> [kubectl\_cert\_data\_ssm\_parameters](#output\_kubectl\_cert\_data\_ssm\_parameters) | List of SSM Parameter ARNs containing cert data for kubectl config. This will only be populated if `var.use_kubeadm=true` |
-| <a name="output_secrets_manager_csi_role_arn"></a> [secrets\_manager\_csi\_role\_arn](#output\_secrets\_manager\_csi\_role\_arn) | The ARN of the IAM Role created for the Secrets Manager CSI Driver |
+| <a name="output_oidc_provider"></a> [oidc\_provider](#output\_oidc\_provider) | The OpenID Connect identity provider (issuer URL without leading `https://`) |
+| <a name="output_oidc_provider_arn"></a> [oidc\_provider\_arn](#output\_oidc\_provider\_arn) | The ARN of the OIDC Provider if `enable_irsa = true` |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC the cluster is deployed to |
 <!-- END_TF_DOCS -->

@@ -63,7 +63,12 @@ output "efs_file_system_id" {
   value       = try(module.eks[0].efs_file_system_id, null)
 }
 
-output "secrets_manager_csi_role_arn" {
-  description = "The ARN of the IAM Role created for the Secrets Manager CSI Driver"
-  value       = try(module.eks[0].secrets_manager_csi_role_arn, null)
+output "oidc_provider_arn" {
+  description = "The ARN of the OIDC Provider if `enable_irsa = true`"
+  value       = try(module.eks[0].oidc_provider_arn, null)
+}
+
+output "oidc_provider" {
+  description = "The OpenID Connect identity provider (issuer URL without leading `https://`)"
+  value       = try(module.eks[0].oidc_provider, null)
 }
