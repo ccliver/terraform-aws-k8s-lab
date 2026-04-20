@@ -84,8 +84,6 @@ module "eks" {
       ipv6_cidr_blocks = ["::/0"]
     }
   }
-
-  tags = var.tags
 }
 
 resource "aws_efs_file_system" "this" {
@@ -96,8 +94,6 @@ resource "aws_efs_file_system" "this" {
   lifecycle_policy {
     transition_to_ia = "AFTER_30_DAYS"
   }
-
-  tags = var.tags
 }
 
 resource "aws_security_group" "efs" {
