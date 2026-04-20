@@ -21,11 +21,6 @@ module "vpc" {
   manage_default_network_acl = false
   enable_nat_gateway         = true
   single_nat_gateway         = var.single_nat_gateway
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
 }
 
 module "kubeadm" {
@@ -46,11 +41,6 @@ module "kubeadm" {
   private_subnets             = module.vpc.private_subnets
   create_etcd_backups_bucket  = var.create_etcd_backups_bucket
   ubuntu_version              = var.ubuntu_version
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
 }
 
 module "eks" {
@@ -74,9 +64,4 @@ module "eks" {
   deploy_cluster_autoscaler_role = var.deploy_cluster_autoscaler_role
   deploy_ebs_csi_role            = var.deploy_ebs_csi_role
   deploy_efs_csi_role            = var.deploy_efs_csi_role
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
 }

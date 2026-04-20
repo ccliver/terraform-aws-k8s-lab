@@ -27,8 +27,6 @@ resource "aws_iam_role" "aws_lbc" {
 
   name               = "${var.name}-aws-lbc"
   assume_role_policy = data.aws_iam_policy_document.aws_lbc_trust[0].json
-
-  tags = var.tags
 }
 
 resource "aws_iam_role_policy" "aws_lbc" {
@@ -48,10 +46,6 @@ resource "aws_security_group" "aws_lbc" {
   name        = "${var.name}-aws-lbc-sg"
   description = "Security group for AWS Load Balancer Controller"
   vpc_id      = var.vpc_id
-
-  tags = merge(var.tags, {
-    Name = "${var.name}-aws-lbc-sg"
-  })
 }
 
 resource "aws_vpc_security_group_ingress_rule" "aws_lbc_allow_from_nodes" {
@@ -127,8 +121,6 @@ resource "aws_iam_role" "cluster_autoscaler" {
 
   name               = "${var.name}-cluster-autoscaler"
   assume_role_policy = data.aws_iam_policy_document.cluster_autoscaler_trust[0].json
-
-  tags = var.tags
 }
 
 data "aws_iam_policy_document" "cluster_autoscaler_policy" {
@@ -204,8 +196,6 @@ resource "aws_iam_role" "ebs_csi" {
 
   name               = "${var.name}-ebs-csi"
   assume_role_policy = data.aws_iam_policy_document.ebs_csi_trust[0].json
-
-  tags = var.tags
 }
 
 data "aws_iam_policy_document" "ebs_csi_policy" {
@@ -368,8 +358,6 @@ resource "aws_iam_role" "efs_csi" {
 
   name               = "${var.name}-efs-csi"
   assume_role_policy = data.aws_iam_policy_document.efs_csi_trust[0].json
-
-  tags = var.tags
 }
 
 data "aws_iam_policy_document" "efs_csi_policy" {

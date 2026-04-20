@@ -1,5 +1,6 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
+data "aws_default_tags" "current" {}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -218,10 +219,6 @@ resource "aws_ssm_parameter" "join_string" {
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
 
-  tags = merge(var.tags, {
-    Name = var.project
-  })
-
   lifecycle {
     ignore_changes = [value]
   }
@@ -232,10 +229,6 @@ resource "aws_ssm_parameter" "ca_cert" {
   description = "kubectl CA cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
-
-  tags = merge(var.tags, {
-    Name = var.project
-  })
 }
 
 resource "aws_ssm_parameter" "client_cert" {
@@ -243,10 +236,6 @@ resource "aws_ssm_parameter" "client_cert" {
   description = "kubectl client cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
-
-  tags = merge(var.tags, {
-    Name = var.project
-  })
 }
 
 resource "aws_ssm_parameter" "client_key" {
@@ -254,10 +243,6 @@ resource "aws_ssm_parameter" "client_key" {
   description = "kubectl client cert"
   type        = "SecureString"
   value       = "empty" # Populated by control plane via userdata
-
-  tags = {
-    Name = var.project
-  }
 }
 
 data "aws_iam_policy_document" "instance_assume_role_policy" {
@@ -376,11 +361,6 @@ resource "aws_instance" "control_plane" {
   metadata_options {
     http_tokens = "required"
   }
-
-  tags = merge(var.tags, {
-    Name        = "${var.project}-control-plane"
-    Environment = "terraform-aws-k8s-lab"
-  })
 }
 
 resource "aws_launch_template" "nodes" {
@@ -428,8 +408,7 @@ resource "aws_launch_template" "nodes" {
 
   tag_specifications {
     resource_type = "instance"
-
-    tags = merge(var.tags, {
+    tags = merge(data.aws_default_tags.current.tags, {
       Name = "${var.project}-node"
     })
   }
@@ -464,25 +443,12 @@ resource "aws_autoscaling_group" "bar" {
     value               = "terraform-aws-k8s-lab"
     propagate_at_launch = true
   }
-
-  dynamic "tag" {
-    for_each = var.tags
-    content {
-      key                 = tag.key
-      value               = tag.value
-      propagate_at_launch = true
-    }
-  }
 }
 
 resource "aws_s3_bucket" "etcd_backups" {
   count = var.create_etcd_backups_bucket ? 1 : 0
 
   bucket = "etcd-backups-${uuid()}"
-
-  tags = merge(var.tags, {
-    Name = "${var.project}-node"
-  })
 }
 
 resource "aws_s3_bucket_public_access_block" "etcd_backups" {
