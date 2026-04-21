@@ -59,6 +59,7 @@
 | <a name="input_ubuntu_version"></a> [ubuntu\_version](#input\_ubuntu\_version) | Image location: `aws ec2 describe-images --region us-east-1 --owners 099720109477` | `string` | `"ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-202*"` | no |
 | <a name="input_use_eks"></a> [use\_eks](#input\_use\_eks) | Create a managed EKS control plane and managed node group | `bool` | `false` | no |
 | <a name="input_use_kubeadm"></a> [use\_kubeadm](#input\_use\_kubeadm) | Build cluster with kubeadm on EC2 instances | `bool` | `false` | no |
+| <a name="input_use_pod_identity"></a> [use\_pod\_identity](#input\_use\_pod\_identity) | Set to true to deploy the IAM role and service account for pod identity | `bool` | `false` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | VPC IP range. This should not overlap with the default for Weavenet, 10.32.0.0/12. | `string` | `"172.31.0.0/16"` | no |
 
 ## Outputs

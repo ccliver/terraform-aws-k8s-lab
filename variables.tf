@@ -158,3 +158,9 @@ variable "deploy_efs_csi_role" {
   description = "Set to true to deploy the IAM role for the EFS CSI Driver"
   default     = false
 }
+
+variable "use_pod_identity" {
+  type        = bool
+  description = "Set to true to deploy the IAM role and service account for pod identity"
+  default     = false
+}
