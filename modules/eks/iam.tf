@@ -56,6 +56,15 @@ resource "aws_iam_role_policy" "aws_lbc" {
   })
 }
 
+resource "aws_eks_pod_identity_association" "aws_lbc" {
+  count = var.use_pod_identity ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.aws_lbc[0].arn
+  service_account = var.aws_lbc_service_account
+  namespace       = "kube-system"
+}
+
 resource "aws_security_group" "aws_lbc" {
   count = var.deploy_aws_lbc_role ? 1 : 0
 
@@ -181,6 +190,15 @@ resource "aws_iam_role_policy" "cluster_autoscaler" {
   name   = "cluster-autoscaler-policy"
   role   = aws_iam_role.cluster_autoscaler[0].id
   policy = data.aws_iam_policy_document.cluster_autoscaler_policy[0].json
+}
+
+resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
+  count = var.use_pod_identity ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.cluster_autoscaler[0].arn
+  service_account = var.cluster_autoscaler_service_account
+  namespace       = "kube-system"
 }
 
 data "aws_iam_policy_document" "ebs_csi_trust" {
@@ -345,6 +363,15 @@ resource "aws_iam_role_policy" "ebs_csi" {
   policy = data.aws_iam_policy_document.ebs_csi_policy[0].json
 }
 
+resource "aws_eks_pod_identity_association" "ebs_csi" {
+  count = var.use_pod_identity ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.ebs_csi[0].arn
+  service_account = var.ebs_csi_service_account
+  namespace       = "kube-system"
+}
+
 data "aws_iam_policy_document" "efs_csi_trust" {
   count = var.deploy_efs_csi_role && !var.use_pod_identity ? 1 : 0
 
@@ -408,4 +435,13 @@ resource "aws_iam_role_policy" "efs_csi" {
   name   = "efs-csi-policy"
   role   = aws_iam_role.efs_csi[0].id
   policy = data.aws_iam_policy_document.efs_csi_policy[0].json
+}
+
+resource "aws_eks_pod_identity_association" "efs_csi" {
+  count = var.use_pod_identity ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.efs_csi[0].arn
+  service_account = var.efs_csi_service_account
+  namespace       = "kube-system"
 }
