@@ -1,5 +1,21 @@
+data "aws_iam_policy_document" "pod_identity_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["pods.eks.amazonaws.com"]
+    }
+
+    actions = [
+      "sts:AssumeRole",
+      "sts:TagSession"
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "aws_lbc_trust" {
-  count = var.deploy_aws_lbc_role ? 1 : 0
+  count = var.deploy_aws_lbc_role && !var.use_pod_identity ? 1 : 0
 
   statement {
     principals {
@@ -17,7 +33,7 @@ data "aws_iam_policy_document" "aws_lbc_trust" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+      values   = ["system:serviceaccount:kube-system:${var.aws_lbc_service_account}"]
     }
   }
 }
@@ -26,7 +42,7 @@ resource "aws_iam_role" "aws_lbc" {
   count = var.deploy_aws_lbc_role ? 1 : 0
 
   name               = "${var.name}-aws-lbc"
-  assume_role_policy = data.aws_iam_policy_document.aws_lbc_trust[0].json
+  assume_role_policy = var.use_pod_identity ? data.aws_iam_policy_document.pod_identity_assume_role.json : data.aws_iam_policy_document.aws_lbc_trust[0].json
 }
 
 resource "aws_iam_role_policy" "aws_lbc" {
@@ -38,6 +54,15 @@ resource "aws_iam_role_policy" "aws_lbc" {
   policy = templatefile("${path.module}/policies/aws-lbc-policy.json", {
     vpc_id = var.vpc_id
   })
+}
+
+resource "aws_eks_pod_identity_association" "aws_lbc" {
+  count = var.use_pod_identity && var.deploy_aws_lbc_role ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.aws_lbc[0].arn
+  service_account = var.aws_lbc_service_account
+  namespace       = "kube-system"
 }
 
 resource "aws_security_group" "aws_lbc" {
@@ -93,7 +118,7 @@ resource "aws_vpc_security_group_egress_rule" "aws_lbc_allow_to_nodes" {
 }
 
 data "aws_iam_policy_document" "cluster_autoscaler_trust" {
-  count = var.deploy_cluster_autoscaler_role ? 1 : 0
+  count = var.deploy_cluster_autoscaler_role && !var.use_pod_identity ? 1 : 0
 
   statement {
     principals {
@@ -111,7 +136,7 @@ data "aws_iam_policy_document" "cluster_autoscaler_trust" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:kube-system:cluster-autoscaler"]
+      values   = ["system:serviceaccount:kube-system:${var.cluster_autoscaler_service_account}"]
     }
   }
 }
@@ -120,7 +145,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
   count = var.deploy_cluster_autoscaler_role ? 1 : 0
 
   name               = "${var.name}-cluster-autoscaler"
-  assume_role_policy = data.aws_iam_policy_document.cluster_autoscaler_trust[0].json
+  assume_role_policy = var.use_pod_identity ? data.aws_iam_policy_document.pod_identity_assume_role.json : data.aws_iam_policy_document.cluster_autoscaler_trust[0].json
 }
 
 data "aws_iam_policy_document" "cluster_autoscaler_policy" {
@@ -167,8 +192,17 @@ resource "aws_iam_role_policy" "cluster_autoscaler" {
   policy = data.aws_iam_policy_document.cluster_autoscaler_policy[0].json
 }
 
+resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
+  count = var.use_pod_identity && var.deploy_cluster_autoscaler_role ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.cluster_autoscaler[0].arn
+  service_account = var.cluster_autoscaler_service_account
+  namespace       = "kube-system"
+}
+
 data "aws_iam_policy_document" "ebs_csi_trust" {
-  count = var.deploy_ebs_csi_role ? 1 : 0
+  count = var.deploy_ebs_csi_role && !var.use_pod_identity ? 1 : 0
 
   statement {
     principals {
@@ -186,7 +220,7 @@ data "aws_iam_policy_document" "ebs_csi_trust" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+      values   = ["system:serviceaccount:kube-system:${var.ebs_csi_service_account}"]
     }
   }
 }
@@ -195,7 +229,7 @@ resource "aws_iam_role" "ebs_csi" {
   count = var.deploy_ebs_csi_role ? 1 : 0
 
   name               = "${var.name}-ebs-csi"
-  assume_role_policy = data.aws_iam_policy_document.ebs_csi_trust[0].json
+  assume_role_policy = var.use_pod_identity ? data.aws_iam_policy_document.pod_identity_assume_role.json : data.aws_iam_policy_document.ebs_csi_trust[0].json
 }
 
 data "aws_iam_policy_document" "ebs_csi_policy" {
@@ -329,8 +363,17 @@ resource "aws_iam_role_policy" "ebs_csi" {
   policy = data.aws_iam_policy_document.ebs_csi_policy[0].json
 }
 
+resource "aws_eks_pod_identity_association" "ebs_csi" {
+  count = var.use_pod_identity && var.deploy_ebs_csi_role ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.ebs_csi[0].arn
+  service_account = var.ebs_csi_service_account
+  namespace       = "kube-system"
+}
+
 data "aws_iam_policy_document" "efs_csi_trust" {
-  count = var.deploy_efs_csi_role ? 1 : 0
+  count = var.deploy_efs_csi_role && !var.use_pod_identity ? 1 : 0
 
   statement {
     principals {
@@ -348,7 +391,7 @@ data "aws_iam_policy_document" "efs_csi_trust" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:kube-system:efs-csi-controller-sa"]
+      values   = ["system:serviceaccount:kube-system:${var.efs_csi_service_account}"]
     }
   }
 }
@@ -357,7 +400,7 @@ resource "aws_iam_role" "efs_csi" {
   count = var.deploy_efs_csi_role ? 1 : 0
 
   name               = "${var.name}-efs-csi"
-  assume_role_policy = data.aws_iam_policy_document.efs_csi_trust[0].json
+  assume_role_policy = var.use_pod_identity ? data.aws_iam_policy_document.pod_identity_assume_role.json : data.aws_iam_policy_document.efs_csi_trust[0].json
 }
 
 data "aws_iam_policy_document" "efs_csi_policy" {
@@ -392,4 +435,13 @@ resource "aws_iam_role_policy" "efs_csi" {
   name   = "efs-csi-policy"
   role   = aws_iam_role.efs_csi[0].id
   policy = data.aws_iam_policy_document.efs_csi_policy[0].json
+}
+
+resource "aws_eks_pod_identity_association" "efs_csi" {
+  count = var.use_pod_identity && var.deploy_efs_csi_role ? 1 : 0
+
+  cluster_name    = module.eks.cluster_name
+  role_arn        = aws_iam_role.efs_csi[0].arn
+  service_account = var.efs_csi_service_account
+  namespace       = "kube-system"
 }

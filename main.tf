@@ -64,4 +64,5 @@ module "eks" {
   deploy_cluster_autoscaler_role = var.deploy_cluster_autoscaler_role
   deploy_ebs_csi_role            = var.deploy_ebs_csi_role
   deploy_efs_csi_role            = var.deploy_efs_csi_role
+  use_pod_identity               = var.use_pod_identity
 }

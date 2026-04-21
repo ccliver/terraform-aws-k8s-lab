@@ -88,3 +88,33 @@ variable "deploy_efs_csi_role" {
   description = "Set to true to deploy the IAM role for the EFS CSI Driver"
   default     = false
 }
+
+variable "use_pod_identity" {
+  type        = bool
+  description = "Set to true to deploy the IAM role and service account for pod identity"
+  default     = false
+}
+
+variable "aws_lbc_service_account" {
+  type        = string
+  description = "The name of the Kubernetes service account to associate with the AWS Load Balancer Controller IAM role"
+  default     = "aws-load-balancer-controller"
+}
+
+variable "cluster_autoscaler_service_account" {
+  type        = string
+  description = "The name of the Kubernetes service account to associate with the Cluster Autoscaler IAM role"
+  default     = "cluster-autoscaler"
+}
+
+variable "ebs_csi_service_account" {
+  type        = string
+  description = "The name of the Kubernetes service account to associate with the EBS CSI Driver IAM role"
+  default     = "ebs-csi-controller-sa"
+}
+
+variable "efs_csi_service_account" {
+  type        = string
+  description = "The name of the Kubernetes service account to associate with the EFS CSI Driver IAM role"
+  default     = "efs-csi-controller-sa"
+}
