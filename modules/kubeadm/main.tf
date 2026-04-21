@@ -437,12 +437,6 @@ resource "aws_autoscaling_group" "bar" {
   timeouts {
     delete = "10m"
   }
-
-  tag {
-    key                 = "Environment"
-    value               = "terraform-aws-k8s-lab"
-    propagate_at_launch = true
-  }
 }
 
 resource "aws_s3_bucket" "etcd_backups" {
