@@ -31,6 +31,7 @@ module "eks" {
         env = {
           ENABLE_PREFIX_DELEGATION = "true"
           WARM_PREFIX_TARGET       = "1"
+          ENABLE_POD_ENI           = "true"
         }
       })
     }
@@ -42,6 +43,9 @@ module "eks" {
   endpoint_public_access                   = true
   endpoint_public_access_cidrs             = var.endpoint_public_access_cidrs
   enable_cluster_creator_admin_permissions = true
+  iam_role_additional_policies = {
+    AmazonEKSVPCResourceController = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  }
 
   eks_managed_node_groups = {
     default = {
