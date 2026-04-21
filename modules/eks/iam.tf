@@ -57,7 +57,7 @@ resource "aws_iam_role_policy" "aws_lbc" {
 }
 
 resource "aws_eks_pod_identity_association" "aws_lbc" {
-  count = var.use_pod_identity ? 1 : 0
+  count = var.use_pod_identity && var.deploy_aws_lbc_role ? 1 : 0
 
   cluster_name    = module.eks.cluster_name
   role_arn        = aws_iam_role.aws_lbc[0].arn
@@ -193,7 +193,7 @@ resource "aws_iam_role_policy" "cluster_autoscaler" {
 }
 
 resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
-  count = var.use_pod_identity ? 1 : 0
+  count = var.use_pod_identity && var.deploy_cluster_autoscaler_role ? 1 : 0
 
   cluster_name    = module.eks.cluster_name
   role_arn        = aws_iam_role.cluster_autoscaler[0].arn
@@ -364,7 +364,7 @@ resource "aws_iam_role_policy" "ebs_csi" {
 }
 
 resource "aws_eks_pod_identity_association" "ebs_csi" {
-  count = var.use_pod_identity ? 1 : 0
+  count = var.use_pod_identity && var.deploy_ebs_csi_role ? 1 : 0
 
   cluster_name    = module.eks.cluster_name
   role_arn        = aws_iam_role.ebs_csi[0].arn
@@ -438,7 +438,7 @@ resource "aws_iam_role_policy" "efs_csi" {
 }
 
 resource "aws_eks_pod_identity_association" "efs_csi" {
-  count = var.use_pod_identity ? 1 : 0
+  count = var.use_pod_identity && var.deploy_efs_csi_role ? 1 : 0
 
   cluster_name    = module.eks.cluster_name
   role_arn        = aws_iam_role.efs_csi[0].arn
