@@ -1,5 +1,10 @@
 provider "aws" {
   region = "us-east-1"
+  default_tags {
+    tags = {
+      Project = "k8s-lab-kubeadm-example"
+    }
+  }
 }
 
 module "k8s_lab" {
