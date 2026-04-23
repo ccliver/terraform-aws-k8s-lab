@@ -17,5 +17,5 @@ module "k8s_lab" {
   min_node_instances         = 2
   max_node_instances         = 4
   ubuntu_version             = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-2025*"
-  kubernetes_version         = "1.33.0-1.1"
+  kubernetes_version         = "1.33.0-1.1" # https://pkgs.k8s.io/core:/stable:/v1.33/deb/Packages
 }
