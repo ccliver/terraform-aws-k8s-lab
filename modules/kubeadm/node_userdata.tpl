@@ -21,7 +21,7 @@ EOF
 # Apply sysctl params without reboot
 sysctl --system
 
-sleep 30 # wait for network
+sleep 60 # wait for network
 apt-get update
 apt-get install -y curl yamllint jq containerd unzip
 curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -41,4 +41,4 @@ apt-get install -y kubelet=${kubernetes_version_full} kubeadm=${kubernetes_versi
 apt-mark hold kubelet kubeadm kubectl
 
 sleep 120 # Give kubeadm time to setup the cluster
-eval $(aws ssm get-parameter --region ${region} --name /k8s-lab/kubeadm/join-string --with-decryption | jq -r .Parameter.Value)
+eval $(/usr/local/bin/aws ssm get-parameter --region ${region} --name ${ssm_parameter_name} --with-decryption | jq -r .Parameter.Value)

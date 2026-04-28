@@ -63,7 +63,7 @@ echo "export ETCDCTL_CACERT=/home/ssm-user/pki/ca.crt" >> /home/ssm-user/.bashrc
 echo "export ETCDCTL_CERT=/home/ssm-user/pki/apiserver-etcd-client.crt" >> /home/ssm-user/.bashrc
 echo "export ETCDCTL_KEY=/home/ssm-user/pki/apiserver-etcd-client.key" >> /home/ssm-user/.bashrc
 
-aws ssm put-parameter --region ${region} --name /k8s-lab/kubeadm/join-string --value "$(kubeadm token create --print-join-command)" --overwrite
+aws ssm put-parameter --region ${region} --name ${join_string_ssm_parameter_name} --value "$(kubeadm token create --print-join-command)" --overwrite
 
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
 CLI_ARCH=amd64
