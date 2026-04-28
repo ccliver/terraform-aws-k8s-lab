@@ -18,4 +18,5 @@ module "k8s_lab" {
   max_node_instances         = 4
   ubuntu_version             = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-2025*"
   kubernetes_version         = "1.33.0-1.1" # https://pkgs.k8s.io/core:/stable:/v1.33/deb/Packages
+  node_instance_type         = "t3a.medium"
 }

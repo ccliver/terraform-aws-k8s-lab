@@ -272,8 +272,7 @@ data "aws_iam_policy_document" "control_plane" {
 
   statement {
     actions = [
-      "kms:Encrypt",
-      "ssm:Decrypt"
+      "kms:Encrypt"
     ]
     resources = ["arn:aws:kms:${local.region}:${local.account_id}:alias/aws/ssm"]
   }
@@ -347,10 +346,11 @@ resource "aws_instance" "control_plane" {
   vpc_security_group_ids = [aws_security_group.control_plane.id]
   subnet_id              = var.public_subnets[0]
   user_data = templatefile("${path.module}/control_plane_userdata.tpl", {
-    hostname                = "${var.project}-control-plane",
-    region                  = local.region,
-    kubernetes_version      = substr(var.kubernetes_version, 0, 4)
-    kubernetes_version_full = var.kubernetes_version
+    hostname                       = "${var.project}-control-plane",
+    region                         = local.region,
+    kubernetes_version             = substr(var.kubernetes_version, 0, 4)
+    kubernetes_version_full        = var.kubernetes_version
+    join_string_ssm_parameter_name = aws_ssm_parameter.join_string.name
   })
   iam_instance_profile        = aws_iam_instance_profile.control_plane.id
   associate_public_ip_address = true
@@ -417,6 +417,7 @@ resource "aws_launch_template" "nodes" {
     region                  = local.region,
     kubernetes_version      = substr(var.kubernetes_version, 0, 4)
     kubernetes_version_full = var.kubernetes_version
+    ssm_parameter_name      = aws_ssm_parameter.join_string.name
   }))
 }
 
