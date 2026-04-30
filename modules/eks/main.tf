@@ -16,14 +16,12 @@ module "eks" {
   kubernetes_version = var.kubernetes_version
 
   # EKS Addons
-  addons = {
-    coredns = {}
+  addons = var.eks_addons ? var.eks_addons : {
+    coredns    = {}
+    kube-proxy = {}
     eks-pod-identity-agent = {
       before_compute = true
     }
-
-    kube-proxy = {}
-
     vpc-cni = {
       before_compute = true
       most_recent    = true
@@ -34,6 +32,15 @@ module "eks" {
           ENABLE_POD_ENI           = "true"
         }
       })
+    }
+    aws-secrets-store-csi-driver-provider = {
+      most_recent = true
+    }
+    aws-ebs-csi-driver = {
+      most_recent = true
+    }
+    aws-efs-csi-driver = {
+      most_recent = true
     }
   }
 
