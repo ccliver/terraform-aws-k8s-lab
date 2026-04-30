@@ -16,7 +16,7 @@ module "eks" {
   kubernetes_version = var.kubernetes_version
 
   # EKS Addons
-  addons = var.eks_addons ? var.eks_addons : {
+  addons = var.eks_addons != null ? var.eks_addons : {
     coredns    = {}
     kube-proxy = {}
     eks-pod-identity-agent = {
