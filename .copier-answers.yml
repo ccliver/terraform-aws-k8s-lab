@@ -1,0 +1,11 @@
+_commit: v1.2.0
+_src_path: git@github.com:ccliver/copier-terraform-module-template.git
+author_full_name: Carl Cliver
+aws_provider_version: ~> 6
+copyright_holder: ccliver
+copyright_year: '2026'
+description: Setup a Kubernetes lab in AWS using kubeadm or EKS
+github_user_name: ccliver
+include_examples: true
+include_terratest: true
+module_name: k8s-lab
