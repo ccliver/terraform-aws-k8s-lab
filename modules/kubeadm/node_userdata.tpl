@@ -1,7 +1,10 @@
 #!/bin/bash
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/
+set -euo pipefail
 
 swapoff -a
+
+sleep 120 # Give kubeadm time to setup the cluster
 
 cat <<EOF | tee /etc/modules-load.d/k8s.conf
 overlay
@@ -21,10 +24,17 @@ EOF
 # Apply sysctl params without reboot
 sysctl --system
 
-sleep 60 # wait for network
+# Make apt retry if network is down
+cat <<EOF | tee /etc/apt/apt.conf.d/80-retries
+Acquire::Retries "5";
+Acquire::http::Timeout "30";
+Acquire::https::Timeout "30";
+Acquire::ForceIPv4 "true";
+EOF
+
 apt-get update
-apt-get install -y curl yamllint jq containerd unzip
-curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+apt-get install -y curl jq containerd unzip
+curl -fsS "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 ./aws/install
 
@@ -40,5 +50,4 @@ apt-get update
 apt-get install -y kubelet=${kubernetes_version_full} kubeadm=${kubernetes_version_full} kubectl=${kubernetes_version_full}
 apt-mark hold kubelet kubeadm kubectl
 
-sleep 120 # Give kubeadm time to setup the cluster
 eval $(/usr/local/bin/aws ssm get-parameter --region ${region} --name ${ssm_parameter_name} --with-decryption | jq -r .Parameter.Value)
