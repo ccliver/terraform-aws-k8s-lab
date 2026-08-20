@@ -16,6 +16,7 @@ module "eks" {
   kubernetes_version = var.kubernetes_version
 
   # EKS Addons
+  # https://docs.aws.amazon.com/eks/latest/userguide/workloads-add-ons-available-eks.html
   addons = var.eks_addons != null ? var.eks_addons : {
     coredns    = {}
     kube-proxy = {}
@@ -40,6 +41,12 @@ module "eks" {
       most_recent = true
     }
     aws-efs-csi-driver = {
+      most_recent = true
+    }
+    cert-manager = {
+      most_recent = true
+    }
+    adot = {
       most_recent = true
     }
   }
