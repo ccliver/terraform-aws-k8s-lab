@@ -43,12 +43,6 @@ module "eks" {
     aws-efs-csi-driver = {
       most_recent = true
     }
-    cert-manager = {
-      most_recent = true
-    }
-    adot = {
-      most_recent = true
-    }
   }
 
   vpc_id                                   = var.vpc_id
