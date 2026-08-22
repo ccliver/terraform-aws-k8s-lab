@@ -47,10 +47,8 @@
 | <a name="input_eks_max_size"></a> [eks\_max\_size](#input\_eks\_max\_size) | Maximum number of nodes in EKS managed node group | `number` | `3` | no |
 | <a name="input_eks_min_size"></a> [eks\_min\_size](#input\_eks\_min\_size) | Minimum number of nodes in EKS managed node group | `number` | `1` | no |
 | <a name="input_eks_node_group_ami_type"></a> [eks\_node\_group\_ami\_type](#input\_eks\_node\_group\_ami\_type) | The AMI type for the managed node group. See https://github.com/awslabs/amazon-eks-ami/releases for valid values | `string` | `"AL2023_x86_64_STANDARD"` | no |
-| <a name="input_enable_intra_subnets"></a> [enable\_intra\_subnets](#input\_enable\_intra\_subnets) | Set to true to provision intra subnets (no route to the internet), e.g. for hosting Gateway Load Balancer endpoints | `bool` | `false` | no |
 | <a name="input_endpoint_public_access_cidrs"></a> [endpoint\_public\_access\_cidrs](#input\_endpoint\_public\_access\_cidrs) | List of CIDR blocks which can access the Amazon EKS public API server endpoint | `list(string)` | `[]` | no |
 | <a name="input_instance_types"></a> [instance\_types](#input\_instance\_types) | List of instance types to use in the managed node group | `list(string)` | `[]` | no |
-| <a name="input_intra_subnet_cidrs"></a> [intra\_subnet\_cidrs](#input\_intra\_subnet\_cidrs) | Intra subnet IP ranges. Only used if `enable_intra_subnets = true` | `list(any)` | <pre>[<br/>  "172.31.96.0/20",<br/>  "172.31.112.0/20",<br/>  "172.31.128.0/20"<br/>]</pre> | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | The version of Kubernetes and associated tools to deploy. For EKS deployment just supply major+minor, for ex 1.35 | `string` | `"1.35.0-1.1"` | no |
 | <a name="input_max_node_instances"></a> [max\_node\_instances](#input\_max\_node\_instances) | The maximum number of nodes to launch | `number` | `3` | no |
 | <a name="input_min_node_instances"></a> [min\_node\_instances](#input\_min\_node\_instances) | The minimum number of nodes to launch | `number` | `1` | no |
@@ -80,14 +78,8 @@
 | <a name="output_efs_csi_role_arn"></a> [efs\_csi\_role\_arn](#output\_efs\_csi\_role\_arn) | The ARN of the IAM Role created for the EFS CSI Driver |
 | <a name="output_efs_file_system_id"></a> [efs\_file\_system\_id](#output\_efs\_file\_system\_id) | The ID of the EFS file system created for the EFS CSI Driver |
 | <a name="output_etcd_backup_bucket"></a> [etcd\_backup\_bucket](#output\_etcd\_backup\_bucket) | S3 bucket to save ETCD backups to |
-| <a name="output_igw_id"></a> [igw\_id](#output\_igw\_id) | ID of the Internet Gateway, used as the target for a GWLB ingress edge route table |
-| <a name="output_intra_route_table_ids"></a> [intra\_route\_table\_ids](#output\_intra\_route\_table\_ids) | IDs of the intra subnet route tables, used to route GWLB endpoint egress |
-| <a name="output_intra_subnets"></a> [intra\_subnets](#output\_intra\_subnets) | IDs of the intra subnets, used to host GWLB endpoints |
 | <a name="output_kubectl_cert_data_ssm_parameters"></a> [kubectl\_cert\_data\_ssm\_parameters](#output\_kubectl\_cert\_data\_ssm\_parameters) | List of SSM Parameter ARNs containing cert data for kubectl config. This will only be populated if `var.use_kubeadm=true` |
-| <a name="output_natgw_ids"></a> [natgw\_ids](#output\_natgw\_ids) | IDs of the NAT Gateways, used if GWLB-inspected egress routes back through existing NAT |
 | <a name="output_oidc_provider"></a> [oidc\_provider](#output\_oidc\_provider) | The OpenID Connect identity provider (issuer URL without leading `https://`) |
 | <a name="output_oidc_provider_arn"></a> [oidc\_provider\_arn](#output\_oidc\_provider\_arn) | The ARN of the OIDC Provider if `enable_irsa = true` |
-| <a name="output_private_route_table_ids"></a> [private\_route\_table\_ids](#output\_private\_route\_table\_ids) | IDs of the private route tables, used to redirect egress traffic through a GWLB endpoint |
-| <a name="output_public_route_table_ids"></a> [public\_route\_table\_ids](#output\_public\_route\_table\_ids) | IDs of the public route tables, used to re-inject GWLB-inspected ingress traffic |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of the VPC the cluster is deployed to |
 <!-- END_TF_DOCS -->
