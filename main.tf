@@ -18,6 +18,7 @@ module "vpc" {
   ]
   public_subnets             = var.public_subnet_cidrs
   private_subnets            = var.private_subnet_cidrs
+  intra_subnets              = var.enable_intra_subnets ? var.intra_subnet_cidrs : []
   manage_default_network_acl = false
   enable_nat_gateway         = true
   single_nat_gateway         = var.single_nat_gateway

@@ -38,6 +38,36 @@ output "vpc_id" {
   value       = module.vpc.vpc_id
 }
 
+output "igw_id" {
+  description = "ID of the Internet Gateway, used as the target for a GWLB ingress edge route table"
+  value       = module.vpc.igw_id
+}
+
+output "private_route_table_ids" {
+  description = "IDs of the private route tables, used to redirect egress traffic through a GWLB endpoint"
+  value       = module.vpc.private_route_table_ids
+}
+
+output "public_route_table_ids" {
+  description = "IDs of the public route tables, used to re-inject GWLB-inspected ingress traffic"
+  value       = module.vpc.public_route_table_ids
+}
+
+output "intra_subnets" {
+  description = "IDs of the intra subnets, used to host GWLB endpoints"
+  value       = module.vpc.intra_subnets
+}
+
+output "intra_route_table_ids" {
+  description = "IDs of the intra subnet route tables, used to route GWLB endpoint egress"
+  value       = module.vpc.intra_route_table_ids
+}
+
+output "natgw_ids" {
+  description = "IDs of the NAT Gateways, used if GWLB-inspected egress routes back through existing NAT"
+  value       = module.vpc.natgw_ids
+}
+
 output "alb_security_group_id" {
   description = "The ID of the security group created for the AWS Load Balancer Controller"
   value       = try(module.eks[0].alb_security_group_id, null)

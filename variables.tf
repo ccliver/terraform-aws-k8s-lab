@@ -135,6 +135,18 @@ variable "alb_allowed_cidrs" {
   default     = []
 }
 
+variable "enable_intra_subnets" {
+  type        = bool
+  description = "Set to true to provision intra subnets (no route to the internet), e.g. for hosting Gateway Load Balancer endpoints"
+  default     = false
+}
+
+variable "intra_subnet_cidrs" {
+  type        = list(any)
+  description = "Intra subnet IP ranges. Only used if `enable_intra_subnets = true`"
+  default     = ["172.31.96.0/20", "172.31.112.0/20", "172.31.128.0/20"]
+}
+
 variable "single_nat_gateway" {
   type        = bool
   description = "Should be true if you want to provision a single shared NAT Gateway across all of your private networks"
