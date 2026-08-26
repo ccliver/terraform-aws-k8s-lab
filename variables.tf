@@ -37,7 +37,7 @@ variable "api_allowed_cidrs" {
 variable "kubernetes_version" {
   type        = string
   description = "The version of Kubernetes and associated tools to deploy. For EKS deployment just supply major+minor, for ex 1.35"
-  default     = "1.35.0-1.1" # https://pkgs.k8s.io/core:/stable:/v1.33/deb/Packages
+  default     = "1.35.0-1.1" # https://pkgs.k8s.io/core:/stable:/v1.35/deb/Packages
 }
 
 variable "vpc_cidr" {
